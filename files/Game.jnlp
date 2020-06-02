@@ -1,6 +1,6 @@
 <jnlp spec="1.0+"
 	codebase="https://zbianucci.github.io/"
-	href="Game.jnlp">
+	href="files/Game.jnlp">
 
 	<information>
 		<title> Particle </title>
@@ -11,10 +11,10 @@
 		<!-- Application Resources -->
 		<j2se version="1.7+"
 			href="http://java.sun.com/products/autodl/j2se"/>
-		<jar href="Particle.jar" main="true" />
+		<jar href="files/Particle.jar" main="true" />
 	</resources>
 
-	<application-desc
+	<application-desc>
 		name = "Particle"
 		main-class="Game.class"
 	</application-desc>
