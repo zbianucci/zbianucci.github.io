@@ -1,65 +1,85 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!--
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-
-<head>
+  <head>
     <title>Hope's Haven</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-        <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png"/>
-</head>
+      <link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png" />
+  </head>
 
-<body class="is-preload">
-
+  <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo">Hope's Haven</a>
+      </header>
 
-        <!-- Header -->
-        <header id="header">
-            <a href="index.html" class="logo">Hope's Haven</a>
-        </header>
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li class="active"><a href="index.html">Main</a></li>
+          <li><a href="aboutMe.html">About Me</a></li>
+        </ul>
+        <ul class="icons">
+          <li>
+            <a
+              href="https://utc.joinhandshake.com/users/21955273"
+              class="fas fa-handshake"
+              target="_blank"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/zach-bianucci"
+              class="icon brands fa-linkedin-in"
+              target="_blank"
+              alt="Linked In"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/zbianucci"
+              class="icon brands fa-github"
+              target="_blank"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+        </ul>
+      </nav>
 
-        <!-- Nav -->
-        <nav id="nav">
-            <ul class="links">
-                <li class="active"><a href="index.html">Main</a></li>
-                <li><a href="aboutMe.html">About Me</a></li>
-                <!--
-                <li><a href="elements.html">Elements Reference</a></li>
-            </ul>
-            <ul class="icons">
-                <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-            </ul>-->
-        </nav>
-
-        <!-- Main -->
-        <div id="main">
-
-            <!-- Text and Images -->
-            <section class="post">
-                <header class="major">
-                    <span class="date"></span>
-                    <h1><a href="https://hopeshaventn.com/index.html">Hopeshaventn.com</a></h1>
-                   <!-- <h1>Tic-Tac-Toe
+      <!-- Main -->
+      <div id="main">
+        <!-- Text and Images -->
+        <section class="post">
+          <header class="major">
+            <span class="date"></span>
+            <h1>
+              <a href="https://hopeshaventn.com/index.html">Hopeshaventn.com</a>
+            </h1>
+            <!-- <h1>Tic-Tac-Toe
                     </h1>
                     <p>This is a standard Tic-Tac-Toe game played between two players. It has players input the coordinates of the grid and outputs display via the IDE output terminal.</p>
                 -->
-                
-                </header>
-                
-                <!--<h3>Inspiration & Foundation</h3>-->
-                <!--particle game pic 1-->
-               <!-- <p><span class="image right"><img src="images/GamePlay1.PNG" alt="" /></span>This game was one of the last lab assignments of my Fundamentals of Computer Science that I took the first semester of my Freshmen year. During this class, I made the transition of majoring in Mathematics to majoring in Computer Science: Cyber Security, and I have not looked back since. Prior to that class, I had no experience with object-oriented languages such as Java, and I am impressed with how far I have come. The Tic-Tac-Toe game was the first project I made that felt that it had real content and purpose behind it. My other projects/labs prior to this would make small computations, have little interaction with the user, or was created for learning a specific topic.</p>
+          </header>
+
+          <!--<h3>Inspiration & Foundation</h3>-->
+          <!--particle game pic 1-->
+          <!-- <p><span class="image right"><img src="images/GamePlay1.PNG" alt="" /></span>This game was one of the last lab assignments of my Fundamentals of Computer Science that I took the first semester of my Freshmen year. During this class, I made the transition of majoring in Mathematics to majoring in Computer Science: Cyber Security, and I have not looked back since. Prior to that class, I had no experience with object-oriented languages such as Java, and I am impressed with how far I have come. The Tic-Tac-Toe game was the first project I made that felt that it had real content and purpose behind it. My other projects/labs prior to this would make small computations, have little interaction with the user, or was created for learning a specific topic.</p>
 
                 <h3>The Basics</h3>
                 <p>The game, as you can see, is visually displayed via the output terminal of an IDE,<span class="image left"><img src="images/GamePlay2.PNG" alt="" /></span> so the the grid and gameplay of the game is constructed through characters and symbols rather than drawn shapes. Data that is received by the players is imputted in a 3x3 array that will be translated to the visual grid. At the time I had not learned about try/catch statements, which would have benefitted this program tremendously. When I turned in this project, it did not have try/catch statements and would allow users to input characters that were not integers, which would result in crashing the program. However, as of writing this article, I have updated the code with appropriate try/catch statements.</p>
@@ -100,10 +120,10 @@
                     programming knowledge, and educate and entertain those that play the game.</p>
                     <iframe height="400px" width="100%" src="https://repl.it/@ZachBianucci/Tic-Tac-Toe?lite=1&outputonly=1" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>            </section>
                 -->
-        </div>
-
-        <footer id="footer">
-            <!--
+        </section>
+      </div>
+      <footer id="footer">
+        <!--
             <section>
                 <form method="post" action="#">
                     <div class="fields">
@@ -127,62 +147,81 @@
             </section>
             -->
 
-            <section class="split contact">
-                <section class="alt">
-                    <h3>Location</h3>
-                    <p>Attends the University of Tennessee at Chattanooga<br />
-                        Lives in Cleveland, TN when not in school</p>
-                </section>
+        <section class="split contact">
+          <section class="alt">
+            <h3>Location</h3>
+            <p>
+              Attends the University of Tennessee at Chattanooga<br />
+              Lives in Cleveland, TN when not in school
+            </p>
+          </section>
 
-                <section>
-                    <h3>Email</h3>
-                    <p><a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a></p>
-                </section>
-                <!--<section>
-                    <h3>Social</h3>
-                    <ul class="icons alt">
-                        <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-facebook-f"><span
-                                    class="label">Facebook</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-instagram"><span
-                                    class="label">Instagram</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-                    </ul>
-                </section>-->
-                <section>
-                    <h3>Credit</h3>
-                    <p>A free, fully responsive HTML5 + CSS3 site template designed by <a
-                            href="https://twitter.com/ajlkn">@ajlkn</a> for <a href="https://html5up.net">HTML5
-                            UP</a>
-                        and released for free under the<br /> <a href="https://html5up.net/license">Creative Commons
-                            license</a>.</p>
-                    <!--<p><a href="#">(000) 000-0000</a></p>-->
-                </section>
-            </section>
-        </footer>
-
-        <!-- Copyright -->
-        <div id="copyright">
-            <ul>
-                <li>&copy; Untitled</li>
-                <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+          <section>
+            <h3>Email</h3>
+            <p>
+              <a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a>
+            </p>
+          </section>
+          <section>
+            <h3>Social</h3>
+            <ul class="icons alt">
+              <li>
+                <a
+                  href="https://utc.joinhandshake.com/users/21955273"
+                  class="icon fas fa-handshake"
+                  target="_blank"
+                  ><span class="label">Handshake</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linkedin.com/in/zach-bianucci"
+                  class="icon brands alt fa-linkedin-in"
+                  target="_blank"
+                  ><span class="label">Instagram</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/zbianucci"
+                  class="icon brands alt fa-github"
+                  target="_blank"
+                  ><span class="label">GitHub</span></a
+                >
+              </li>
             </ul>
-        </div>
+          </section>
+          <section>
+            <h3>Credit</h3>
+            <p>
+              A free, fully responsive HTML5 + CSS3 site template designed by
+              <a href="https://twitter.com/ajlkn">@ajlkn</a> for
+              <a href="https://html5up.net">HTML5 UP</a> and released for free
+              under the<br />
+              <a href="https://html5up.net/license">Creative Commons license</a
+              >.
+            </p>
+            <!--<p><a href="#">(000) 000-0000</a></p>-->
+          </section>
+        </section>
+      </footer>
 
+      <!-- Copyright -->
+      <div id="copyright">
+        <ul>
+          <li>&copy; Untitled</li>
+          <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
+
+      <!-- Scripts -->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrollex.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/browser.min.js"></script>
+      <script src="assets/js/breakpoints.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <script src="assets/js/main.js"></script>
     </div>
-
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-
-</body>
-
+  </body>
 </html>

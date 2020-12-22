@@ -1,180 +1,216 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!--
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-
-<head>
+  <head>
     <title>Puzzle Cube</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-        <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png"/>
-</head>
+      <link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png" />
+  </head>
 
-<body class="is-preload">
-
+  <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo">Puzzle Cube</a>
+      </header>
 
-        <!-- Header -->
-        <header id="header">
-            <a href="index.html" class="logo">Particle</a>
-        </header>
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li class="active"><a href="index.html">Main</a></li>
+          <li><a href="aboutMe.html">About Me</a></li>
+        </ul>
+        <ul class="icons">
+          <li>
+            <a
+              href="https://utc.joinhandshake.com/users/21955273"
+              class="fas fa-handshake"
+              target="_blank"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/zach-bianucci"
+              class="icon brands fa-linkedin-in"
+              target="_blank"
+              alt="Linked In"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/zbianucci"
+              class="icon brands fa-github"
+              target="_blank"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+        </ul>
+      </nav>
 
-        <!-- Nav -->
-        <nav id="nav">
-            <ul class="links">
-                <li class="active"><a href="index.html">Main</a></li>
-                <li><a href="aboutMe.html">About Me</a></li>
-                <!--<li><a href="elements.html">Elements Reference</a></li>
-            </ul>
-            <ul class="icons">
-                <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-            </ul>-->
-        </nav>
-
-        <!-- Main -->
-        <div id="main">
-
-            <!-- Text and Images -->
-            <section class="post">
-                <header class="major">
-                    <span class="date"></span>
-                    <h1>Puzzle Cube<br />
-                    </h1>
-                    <p>A Python program that simulates the functionality of a standard 3x3 puzzle cube. The program will eventually work to find optimal solutions to any puzzle cube scramble. As of right now, it can randomly mix a cube.</p>
-                </header>
-                <h3>Inspiration & Foundation</h3>
-                <!--particle game pic 1-->
-                <!--<p><span class="image right"><img src="images/Gameplay1GIF.gif" alt="" /></span>-->
-                <p>Solving puzzle cubes
-                has been my hobby for the longest time, so I thought I would take that experience and merge it with
-                my love for programming. I wanted to start this project completely clean without any walkthroughs or tutorials: just
-                my pure knowledge and any research about the functionality and statistics of the cube that I could find.
-                I also wanted a project that was more back-end heavy. I want to push my abilities of Data Structures
-                and object-oriented design in Python: a language I have become quite fond of.
+      <!-- Main -->
+      <div id="main">
+        <!-- Text and Images -->
+        <section class="post">
+          <header class="major">
+            <span class="date"></span>
+            <h1>Puzzle Cube<br /></h1>
+            <p>
+              A Python program that simulates the functionality of a standard
+              3x3 puzzle cube. The program will eventually work to find optimal
+              solutions to any puzzle cube scramble. As of right now, it can
+              randomly mix a cube.
             </p>
+          </header>
+          <h3>Inspiration & Foundation</h3>
+          <p>
+            Solving puzzle cubes has been my hobby for the longest time, so I
+            thought I would take that experience and merge it with my love for
+            programming. I wanted to start this project completely clean without
+            any walkthroughs or tutorials: just my pure knowledge and any
+            research about the functionality and statistics of the cube that I
+            could find. I also wanted a project that was more back-end heavy. I
+            want to push my abilities of Data Structures and object-oriented
+            design in Python: a language I have become quite fond of.
+          </p>
 
-                <!--The Basics-->
-                <h3>The Basics</h3>
-                <p>Puzzle cubes are extremely complicated, and it will take an extremely long time to explain the complexities
-                    of it for this project, so I will explain things simply, not everything will make sense, but bear with me.
-                    Because this project is purely back-end, anyone without programming knowledge will be completely lost.
+          <!--The Basics-->
+          <h3>The Basics</h3>
+          <p>
+            Puzzle cubes are extremely complicated, and it will take an
+            extremely long time to explain the complexities of it for this
+            project, so I will explain things simply, not everything will make
+            sense, but bear with me. Because this project is purely back-end,
+            anyone without programming knowledge will be completely lost.
 
-                    <span class="image left"><img src="images/rubik-flat.png"
-                            alt="" /></span>loses
-                    Take a look at the flattened image of the cube. This is the best way to represent a 3-D cube in 2-D.
-                    The program corresponds colors with integers to make the writing process faster. 0 is white, 1 is orange,
-                    2 is green, 3 is red, 4 is blue, and 5 is green. The cube can be moved by turning one of the 6 faces clockwise,
-                    counterclockwise or a 180 degree turn (direction does not matter). Those moves are represented by the letters
-                    on the image. A single clockwise turn of the green face is considered F. A counterclockwise turn of the green face
-                    is considered F', which is pronounced "F prime." A 180 degree turn in either direction of the green face is F2.
-                    This terminology works for any of the faces with their corresponding letters and is the standard way to define moves
-                    for all competitive cube solvers.
-                </p>
+            <span class="image left"
+              ><img src="images/rubik-flat.png" alt="" /></span
+            >Take a look at the flattened image of the cube. This is the best
+            way to represent a 3-D cube in 2-D. The program corresponds colors
+            with integers to make the writing process faster. 0 is white, 1 is
+            orange, 2 is green, 3 is red, 4 is blue, and 5 is green. The cube
+            can be moved by turning one of the 6 faces clockwise,
+            counterclockwise or a 180 degree turn (direction does not matter).
+            Those moves are represented by the letters on the image. A single
+            clockwise turn of the green face is considered F. A counterclockwise
+            turn of the green face is considered F', which is pronounced "F
+            prime." A 180 degree turn in either direction of the green face is
+            F2. This terminology works for any of the faces with their
+            corresponding letters and is the standard way to define moves for
+            all competitive cube solvers.
+          </p>
 
-                <!--Stage 1-->
-                <h3>Stage 1</h3>
-                <p>
-                    I am building this program in stages, since I am not sure when/if I will ever make the end result. Stage one is to make
-                    a functioning cube that can be scrambled. With the terminology explained before in mind, you can see the output of the
-                    program below illustrate the image of the cube via the __str__ method. Below that I printed out twenty random moves of
-                    the cube to scramble it using the Scramble Class. If a person were to take a standard 3x3 solved puzzle cube and move
-                    the corresponding moves (assuming they hold it in the correct orientation with white on top and green facing the person),
-                    the physical cube will look exactly the same as the cube in the program.
-                </p>
+          <!--Stage 1-->
+          <h3>Stage 1</h3>
+          <p>
+            I am building this program in stages, since I am not sure when/if I
+            will ever make the end result. Stage one is to make a functioning
+            cube that can be scrambled. With the terminology explained before in
+            mind, you can see the output of the program below illustrate the
+            image of the cube via the __str__ method. Below that I printed out
+            twenty random moves of the cube to scramble it using the Scramble
+            Class. If a person were to take a standard 3x3 solved puzzle cube
+            and move the corresponding moves (assuming they hold it in the
+            correct orientation with white on top and green facing the person),
+            the physical cube will look exactly the same as the cube in the
+            program.
+          </p>
 
-                
-                <!--Puzzle Cube implemented via repl.it-->
-                <!--<iframe height="500px" width="100%" src="https://repl.it/@ZachBianucci/PuzzleCube?lite=1&outputonly=1"
-                scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true"
-                sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>-->
-                <iframe src="https://trinket.io/embed/python/62e3441517?start=result" width="100%"
-                height="900" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
-                <p>Having issues? Try refreshing the page.</p>
-                </section>
+          <!--Puzzle Cube implemented via trinket-->
+          <iframe
+            src="https://trinket.io/embed/python/62e3441517?start=result"
+            width="100%"
+            height="900"
+            frameborder="0"
+            marginwidth="0"
+            marginheight="0"
+            allowfullscreen
+          ></iframe>
+          <p>Having issues? Try refreshing the page.</p>
+        </section>
+      </div>
 
-        </div>
+      <!-- Footer -->
+      <footer id="footer">
+        <section class="split contact">
+          <section class="alt">
+            <h3>Location</h3>
+            <p>
+              Attends the University of Tennessee at Chattanooga<br />
+              Lives in Cleveland, TN when not in school
+            </p>
+          </section>
 
-        <!-- Footer -->
-        <footer id="footer">
-            <!--
-            <section>
-                <form method="post" action="#">
-                    <div class="fields">
-                        <div class="field">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" />
-                        </div>
-                        <div class="field">
-                            <label for="email">Email</label>
-                            <input type="text" name="email" id="email" />
-                        </div>
-                        <div class="field">
-                            <label for="message">Message</label>
-                            <textarea name="message" id="message" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <ul class="actions">
-                        <li><input type="submit" value="Send Message" /></li>
-                    </ul>
-                </form>
-            </section>
-            -->
-
-            <section class="split contact">
-                <section class="alt">
-                    <h3>Location</h3>
-                    <p>Attends the University of Tennessee at Chattanooga<br />
-                        Lives in Cleveland, TN when not in school</p>
-                </section>
-
-                <section>
-                    <h3>Email</h3>
-                    <p><a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a></p>
-                </section>
-                <!--<section>
-                    <h3>Social</h3>
-                    <ul class="icons alt">
-                        <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-facebook-f"><span
-                                    class="label">Facebook</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-instagram"><span
-                                    class="label">Instagram</span></a>
-                        </li>
-                        <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-                    </ul>
-                </section>-->
-                <section>
-                    <h3>Credit</h3>
-                    <p>A free, fully responsive HTML5 + CSS3 site template designed by <a
-                            href="https://twitter.com/ajlkn">@ajlkn</a> for <a href="https://html5up.net">HTML5
-                            UP</a>
-                        and released for free under the<br /> <a href="https://html5up.net/license">Creative Commons
-                            license</a>.</p>
-                    <!--<p><a href="#">(000) 000-0000</a></p>-->
-                </section>
-            </section>
-        </footer>
-
-        <!-- Copyright -->
-        <div id="copyright">
-            <ul>
-                <li>&copy; Untitled</li>
-                <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+          <section>
+            <h3>Email</h3>
+            <p>
+              <a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a>
+            </p>
+          </section>
+          <section>
+            <h3>Social</h3>
+            <ul class="icons alt">
+              <li>
+                <a
+                  href="https://utc.joinhandshake.com/users/21955273"
+                  class="icon fas fa-handshake"
+                  target="_blank"
+                  ><span class="label">Handshake</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linkedin.com/in/zach-bianucci"
+                  class="icon brands alt fa-linkedin-in"
+                  target="_blank"
+                  ><span class="label">Instagram</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/zbianucci"
+                  class="icon brands alt fa-github"
+                  target="_blank"
+                  ><span class="label">GitHub</span></a
+                >
+              </li>
             </ul>
-        </div>
+          </section>
+          <section>
+            <h3>Credit</h3>
+            <p>
+              A free, fully responsive HTML5 + CSS3 site template designed by
+              <a href="https://twitter.com/ajlkn">@ajlkn</a> for
+              <a href="https://html5up.net">HTML5 UP</a> and released for free
+              under the<br />
+              <a href="https://html5up.net/license">Creative Commons license</a
+              >.
+            </p>
+          </section>
+        </section>
+      </footer>
 
+      <!-- Copyright -->
+      <div id="copyright">
+        <ul>
+          <li>&copy; Untitled</li>
+          <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
     </div>
 
     <!-- Scripts -->
@@ -185,7 +221,5 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-
-</body>
-
+  </body>
 </html>
