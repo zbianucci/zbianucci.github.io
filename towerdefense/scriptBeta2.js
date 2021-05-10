@@ -1,4 +1,3 @@
-const version = "Beta 1.0";
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 canvas.width = 900;
@@ -10,27 +9,17 @@ const cellGap = 3;
 let numberOfResources = 300;
 let enemiesInterval = 600;
 let frame = 0;
-//let gameOver = false;
+let gameOver = false;
 let score = 0;
 const winningScore = 100;
 let chosenDefender = 1; //boy for 1, girl for 2
-let clicked = false;
 
-let gameGrid = [];
-let defenders = [];
-let enemies = [];
-let enemyPositions = [];
-let projectiles = [];
-let resources = [];
-
-//enum of all the possible game states
-const gameState = {
-  GAME: "game",
-  MENU: "menu",
-  GAMEOVER: "gameover",
-  WIN: "win",
-};
-let state = gameState.MENU;
+const gameGrid = [];
+const defenders = [];
+const enemies = [];
+const enemyPositions = [];
+const projectiles = [];
+const resources = [];
 
 //mouse
 const mouse = {
@@ -71,7 +60,7 @@ class Cell {
   }
   draw() {
     if (mouse.x && mouse.y && collision(this, mouse)) {
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "black";
       ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
   }
@@ -79,7 +68,6 @@ class Cell {
 function createGrid() {
   for (let y = cellSize; y < canvas.height; y += cellSize) {
     for (let x = 0; x < canvas.width; x += cellSize) {
-
       gameGrid.push(new Cell(x, y));
     }
   }
@@ -92,68 +80,24 @@ function handleGameGrid() {
 }
 
 //projectiles
-const bullet1 = new Image();
-bullet1.src = "sprites/d1bullet.png";
-const bullet2 = new Image();
-bullet2.src = "sprites/d2bullet.png";
 class Projectile {
-  constructor(x, y, color) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.width = 40;
-    this.height = 40;
+    this.width = 10;
+    this.height = 10;
     this.power = 20;
     this.speed = 5;
-    this.frameX = 0;
-    this.frameY = 0;
-    this.spriteWidth = 64;
-    this.spriteHeight = 64;
-    this.minFrame = 0;
-    this.maxFrame = 6;
-    this.color = color;
   }
   update() {
-    if (frame % 10 === 0) {
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = this.minFrame;
-      //if (this.frameX === 15) this.shootNow = true;
-    }
     this.x += this.speed;
-    if (!this.impact) {
-      this.minFrame = 0;
-      this.maxFrame = 2;
-    } else {
-      this.minFrame = 3;
-      this.maxFrame = 6;
-    }
   }
   draw() {
-    if (this.color === "blue") {
-      //ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
-      ctx.drawImage(
-        bullet1,
-        this.frameX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.x,
-        this.y - 15,
-        this.width,
-        this.height
-      );
-    } else if (this.color === "pink") {
-      ctx.drawImage(
-        bullet2,
-        this.frameX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.x,
-        this.y - 20,
-        this.width,
-        this.height
-      );
-    }
+    //circle
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.width, 0, Math.PI * 2);
+    ctx.fill();
   }
 }
 function handleProjectiles() {
@@ -172,10 +116,12 @@ function handleProjectiles() {
         i--;
       }
     }
+
     if (projectiles[i] && projectiles[i].x > canvas.width - cellSize) {
       projectiles.splice(i, 1);
       i--;
     }
+    console.log("projectiles " + projectiles.length);
   }
 }
 
@@ -206,7 +152,7 @@ class Defender {
   draw() {
     //ctx.fillStyle = "blue";
     //ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.font = "30px Orbitron";
     ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
     if (this.chosenDefender === 1) {
@@ -259,11 +205,7 @@ class Defender {
       }
     }
     if (this.shooting && this.shootNow) {
-      if (this.chosenDefender === 1) {
-        projectiles.push(new Projectile(this.x + 70, this.y + 35, "blue"));
-      } else if (this.chosenDefender === 2) {
-        projectiles.push(new Projectile(this.x + 70, this.y + 35, "pink"));
-      }
+      projectiles.push(new Projectile(this.x + 70, this.y + 35));
       this.shootNow = false;
     }
   }
@@ -308,19 +250,15 @@ const card2 = {
 function chooseDefender() {
   let card1stroke = "black";
   let card2stroke = "black";
-  if (collision(mouse, card1) && mouse.clicked && state == gameState.GAME) {
+  if (collision(mouse, card1) && mouse.clicked) {
     chosenDefender = 1;
-  } else if (
-    collision(mouse, card2) &&
-    mouse.clicked &&
-    state == gameState.GAME
-  ) {
+  } else if (collision(mouse, card2) && mouse.clicked) {
     chosenDefender = 2;
   }
-  if (chosenDefender === 1 && state == gameState.GAME) {
+  if (chosenDefender === 1) {
     card1stroke = "gold";
     card2stroke = "black";
-  } else if (chosenDefender === 2 && state == gameState.GAME) {
+  } else if (chosenDefender === 2) {
     card1stroke = "black";
     card2stroke = "gold";
   } else {
@@ -416,7 +354,7 @@ class Enemy {
   draw() {
     // ctx.fillStyle = "red";
     // ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.font = "30px Orbitron";
     ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
     // ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
@@ -438,7 +376,7 @@ function handleEnemies() {
     enemies[i].update();
     enemies[i].draw();
     if (enemies[i].x < 0) {
-      state = gameState.GAMEOVER;
+      gameOver = true;
     }
     if (enemies[i].health <= 0) {
       let gainedResources = enemies[i].maxHealth / 10;
@@ -448,7 +386,7 @@ function handleEnemies() {
           enemies[i].x,
           enemies[i].y,
           30,
-          "white"
+          "black"
         )
       );
       floatingMessages.push(
@@ -460,6 +398,7 @@ function handleEnemies() {
       enemyPositions.splice(findThisIndex, 1);
       enemies.splice(i, 1);
       i--;
+      console.log(enemyPositions);
     }
   }
   if (frame % enemiesInterval === 0 && score < winningScore) {
@@ -468,13 +407,12 @@ function handleEnemies() {
     enemies.push(new Enemy(verticalPosition));
     enemyPositions.push(verticalPosition);
     if (enemiesInterval > 120) enemiesInterval -= 50; //change line to change game difficulty
+    console.log(enemyPositions);
   }
 }
 
 //resources
-const crystal = new Image();
-crystal.src = "sprites/crystal.png";
-const amounts = [40, 60, 80];
+const amounts = [20, 30, 40];
 class Resource {
   constructor() {
     this.x = Math.random() * (canvas.width - cellSize);
@@ -482,36 +420,13 @@ class Resource {
     this.width = cellSize * 0.6;
     this.height = cellSize * 0.6;
     this.amount = amounts[Math.floor(Math.random() * amounts.length)];
-    this.frameX = 0; //cycles through the frames of the sprite
-    this.frameY = 0; //if a sprite sheet is only one row, y stays at 0
-    this.minFrame = 0;
-    this.maxFrame = 7;
-    this.spriteWidth = 130;
-    this.spriteHeight = 128;
   }
   draw() {
-    // ctx.fillStyle = "yellow";
-    // ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = "black";
     ctx.font = "20px Orbitron";
-    ctx.fillText(this.amount, this.x + 12, this.y + 18);
-    ctx.drawImage(
-      crystal,
-      this.frameX * this.spriteWidth,
-      0,
-      this.spriteWidth,
-      this.spriteHeight,
-      this.x,
-      this.y + 10,
-      this.width,
-      this.height
-    );
-  }
-  update() {
-    if (frame % 9 === 0) {
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = this.minFrame;
-    }
+    ctx.fillText(this.amount, this.x + 15, this.y + 25);
   }
 }
 function handleResources() {
@@ -519,7 +434,6 @@ function handleResources() {
     resources.push(new Resource());
   }
   for (let i = 0; i < resources.length; i++) {
-    resources[i].update();
     resources[i].draw();
     if (resources[i] && mouse.x && mouse.y && collision(resources[i], mouse)) {
       numberOfResources += resources[i].amount;
@@ -529,7 +443,7 @@ function handleResources() {
           resources[i].x,
           resources[i].y,
           30,
-          "white"
+          "black"
         )
       );
       floatingMessages.push(
@@ -547,400 +461,56 @@ function handleGameStatus() {
   ctx.font = "30px Orbitron";
   ctx.fillText("Score: " + score, 180, 40);
   ctx.fillText("Resources: " + numberOfResources, 180, 80);
+  if (gameOver) {
+    ctx.fillStyle = "black";
+    ctx.font = "90px Orbitron";
+    ctx.fillText("GAME OVER", 135, 330);
+  }
   if (score >= winningScore && enemies.length === 0) {
-    state = gameState.WIN;
+    ctx.fillStyle = "black";
+    ctx.font = "60px Orbitron";
+    ctx.fillText("LEVEL COMPLETE", 130, 300);
+    ctx.font = "30px Orbitron";
+    ctx.fillText("You win with " + score + " points!", 134, 340);
   }
 }
 
 canvas.addEventListener("click", function () {
   const gridPositionX = mouse.x - (mouse.x % cellSize) + cellGap;
   const gridPositionY = mouse.y - (mouse.y % cellSize) + cellGap;
-  if (gridPositionY < cellSize || !(state == gameState.GAME)) return; //mouse in blue bar
+  if (gridPositionY < cellSize) return; //mouse in blue bar
   for (let i = 0; i < defenders.length; i++) {
     if (defenders[i].x === gridPositionX && defenders[i].y === gridPositionY)
       return;
   }
   let defenderCost = 100;
-  if (numberOfResources >= defenderCost && state == gameState.GAME && clicked) {
+  if (numberOfResources >= defenderCost) {
     defenders.push(new Defender(gridPositionX, gridPositionY));
     numberOfResources -= defenderCost;
-  } else if (state == gameState.GAME && !clicked) {
-    clicked = true;
-  } else if (state == gameState.GAME && clicked) {
+  } else {
     floatingMessages.push(
-      new floatingMessage("need more resources", mouse.x, mouse.y, 15, "white")
+      new floatingMessage("need more resources", mouse.x, mouse.y, 15, "blue")
     );
   }
 });
 
-//ground
-const ground = new Image();
-ground.src = "backgrounds/ground.png";
-
-function tile() {
-  let tiles = [
-    [2, 3, 8, 3, 7, 7],
-    [7, 2, 9, 10, 8, 10],
-    [9, 6, 10, 7, 10, 7],
-    [2, 2, 10, 2, 7, 3],
-    [2, 7, 6, 10, 6, 10],
-    [7, 7, 8, 6, 8, 3],
-    [3, 6, 10, 9, 8, 2],
-    [6, 8, 9, 2, 7, 2],
-    [3, 7, 3, 9, 10, 9],
-  ];
-  const spriteWidth = 130;
-  const spriteHeight = 130;
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 6; j++) {
-      // ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
-      ctx.drawImage(
-        ground,
-        tiles[i][j] * spriteWidth,
-        2,
-        spriteWidth,
-        spriteHeight - 4,
-        i * cellSize,
-        j * cellSize,
-        cellSize,
-        cellSize
-      );
-    }
-  }
-}
-
-//background
-const backgroundColor = new Image();
-backgroundColor.src = "backgrounds/Night-Background8.png";
-const dirt = new Image();
-dirt.src = "backgrounds/Night-Background3.png";
-const moon = new Image();
-moon.src = "backgrounds/Night-Background2.png";
-const ship = new Image();
-ship.src = "backgrounds/Dusk-Background3.png";
-const stars = new Image();
-stars.src = "backgrounds/Night-Background5.png";
-const clouds = new Image();
-clouds.src = "backgrounds/Factory-Background-3.png";
-const factory = new Image();
-factory.src = "backgrounds/Factory-Background-2.png";
-function background() {
-  const imageWidth = 1920;
-  const imageHeight = 1080;
-  // ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
-  ctx.drawImage(
-    backgroundColor,
-    0,
-    imageHeight / 2 - cellSize * 2 + 200,
-    imageWidth,
-    cellSize * 2,
-    0,
-    0,
-    canvas.width,
-    cellSize * 2
-  );
-  ctx.drawImage(
-    stars,
-    0,
-    0,
-    imageWidth,
-    imageHeight,
-    canvas.width / 2,
-    0,
-    canvas.width / 2,
-    cellSize
-  );
-  ctx.drawImage(
-    moon,
-    120,
-    80,
-    imageWidth / 4 + 100,
-    imageHeight / 2,
-    canvas.width - canvas.width / 4,
-    0,
-    cellSize,
-    cellSize
-  );
-  ctx.drawImage(
-    dirt,
-    0,
-    imageHeight - cellSize * 5,
-    imageWidth,
-    cellSize * 4,
-    0,
-    0,
-    canvas.width,
-    cellSize * 2 + 10
-  );
-  ctx.drawImage(
-    factory,
-    0,
-    0,
-    imageWidth,
-    imageHeight,
-    canvas.width / 2,
-    0,
-    cellSize * 2,
-    cellSize + 27
-  );
-  ctx.drawImage(
-    clouds,
-    0,
-    0,
-    imageWidth,
-    imageHeight,
-    canvas.width / 2,
-    0,
-    canvas.width / 2,
-    cellSize
-  );
-  ctx.drawImage(
-    ship,
-    0,
-    imageHeight / 4,
-    (imageWidth * 3) / 4,
-    imageHeight,
-    0,
-    20,
-    canvas.width / 2,
-    cellSize * 2 + 10
-  );
-}
-
-//features
-const brownBush = new Image();
-brownBush.src = "features/brownBush.png";
-const purpleBush = new Image();
-purpleBush.src = "features/purpleBush.png";
-const purpleTree = new Image();
-purpleTree.src = "features/purpleTree.png";
-const thorns = new Image();
-thorns.src = "features/thorns.png";
-class Features {
-  constructor() {
-    this.width = cellSize * 0.6;
-    this.height = cellSize * 0.6;
-    this.frameX = 0; //cycles through the frames of the sprite
-    this.frameY = 0; //if a sprite sheet is only one row, y stays at 0
-    this.minFrame = 0;
-    this.maxFrame = 3;
-    this.bushHeight = 128;
-    this.thornsHeight = 192;
-  }
-  draw() {
-    ctx.drawImage(
-      brownBush,
-      this.frameX * this.bushHeight,
-      0,
-      this.bushHeight,
-      this.bushHeight,
-      cellSize,
-      cellSize * 2 - 25,
-      this.bushHeight,
-      this.bushHeight
-    );
-    ctx.drawImage(
-      purpleBush,
-      this.frameX * this.bushHeight,
-      0,
-      this.bushHeight,
-      this.bushHeight,
-      cellSize * 5,
-      cellSize * 3 - 25,
-      this.bushHeight,
-      this.bushHeight
-    );
-    ctx.drawImage(
-      purpleTree,
-      this.frameX * this.bushHeight,
-      0,
-      this.bushHeight,
-      this.bushHeight,
-      cellSize * 2 - 40,
-      cellSize * 5 - 40,
-      this.bushHeight,
-      this.bushHeight
-    );
-    ctx.drawImage(
-      thorns,
-      this.frameX * this.thornsHeight,
-      0,
-      this.thornsHeight,
-      this.thornsHeight,
-      cellSize * 7,
-      cellSize * 2 - 50,
-      this.thornsHeight - 20,
-      this.thornsHeight - 20
-    );
-  }
-  update() {
-    if (frame % 13 === 0) {
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = this.minFrame;
-    }
-  }
-}
-features = new Features();
-function handleFeatures() {
-  features.draw();
-  features.update();
-}
-
-//Menu
-const menuBackground = new Image();
-menuBackground.src = "backgrounds/Theme1-BG.jpg";
-const logo = new Image();
-logo.src = "features/LogoZB-pic.png";
-class Menu {
-  constructor() {
-    this.width = 2048;
-    this.height = 1536;
-  }
-  draw() {
-    ctx.drawImage(
-      menuBackground,
-      0,
-      0,
-      this.width,
-      this.height,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-    ctx.drawImage(
-      logo,
-      0,
-      0,
-      946,
-      995,
-      -6,
-      0,
-      946/13,
-      995/13
-    );
-    ctx.fillStyle = "white";
-    ctx.font = "15px Orbitron";
-    ctx.fillText(version, canvas.width - 155, 270);
-      ctx.font = "30px Orbitron";
-      ctx.fillText("Bianucci Games Presents:", 60, 50);
-      ctx.font = "100px Orbitron";
-      ctx.fillText("GALAXY", 20, 150);
-      ctx.fillText("DEFENDERS", 100, 250);
-  }
-}
-
-//Button
-class Button {
-  constructor() {
-    this.button = new Image();
-    this.button.src = "features/button.png";
-    this.width = 512;
-    this.height = 240;
-  }
-  draw() {
-    ctx.drawImage(
-      this.button,
-      0,
-      0,
-      this.width,
-      this.height,
-      canvas.width / 2 - (this.width - 100) / 2,
-      canvas.height / 2 + 100,
-      this.width - 100,
-      this.height - 100
-    );
-  }
-}
-
-function clickButton(s) {
-  const buttonShape = {
-    x: canvas.width / 2 - 412 / 2,
-    y: canvas.height / 2 + 100,
-    width: 412,
-    height: 140,
-  };
-  if (collision(mouse, buttonShape) && mouse.clicked) {
-    mouse.clicked = false;
-    if (state == gameState.MENU) {
-      clicked = false;
-    }
-    state = s;
-  }
-}
-
-//reset the game after a game over or win
-function reset() {
-  defenders = [];
-  enemies = [];
-  enemyPositions = [];
-  projectiles = [];
-  resources = [];
-  score = 0;
-  numberOfResources = 300;
-  enemiesInterval = 600;
-}
-
-//animate
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  switch (state) {
-    case gameState.GAME:
-      tile();
-      background();
-      handleGameGrid();
-      handleDefenders();
-      handleResources();
-      handleProjectiles();
-      handleEnemies();
-      handleFeatures();
-      chooseDefender();
-      handleGameStatus();
-      handleFloatingMessages();
-      break;
-    case gameState.MENU:
-      menu = new Menu();
-      menu.draw();
-      button = new Button();
-      button.draw();
-      ctx.fillStyle = "white";
-      ctx.font = "40px Orbitron";
-      ctx.fillText("START", 372, 485);
-      reset();
-      clickButton(gameState.GAME);
-      break;
-    case gameState.GAMEOVER:
-      ctx.fillStyle = "white";
-      ctx.font = "90px Orbitron";
-      ctx.fillText("GAME OVER", 130, 200);
-      button = new Button();
-      button.draw();
-      ctx.font = "40px Orbitron";
-      ctx.fillText("MAIN MENU", 320, 485);
-      clickButton(gameState.MENU);
-      //reset();
-      break;
-    case gameState.WIN:
-      ctx.fillStyle = "white";
-      ctx.font = "60px Orbitron";
-      ctx.fillText("LEVEL COMPLETE", 130, 200);
-      ctx.font = "30px Orbitron";
-      ctx.fillText("You win with " + score + " points!", 267, 300);
-      button = new Button();
-      button.draw();
-      ctx.font = "40px Orbitron";
-      ctx.fillText("MAIN MENU", 320, 485);
-      clickButton(gameState.MENU);
-      //reset();
-      break;
-  }
-  requestAnimationFrame(animate);
+  ctx.fillStyle = "blue";
+  ctx.fillRect(0, 0, controlsBar.width, controlsBar.height);
+  handleGameGrid();
+  handleDefenders();
+  handleResources();
+  handleProjectiles();
+  handleEnemies();
+  chooseDefender();
+  handleGameStatus();
+  handleFloatingMessages();
   frame++;
+  if (!gameOver) requestAnimationFrame(animate);
 }
 animate();
-//collision
+
 function collision(first, second) {
   if (
     !(
