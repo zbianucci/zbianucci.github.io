@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>Particle</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+      <link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png" />
+  </head>
+
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo">Particle</a>
+      </header>
+
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li class="active"><a href="index.html#title">Main</a></li>
+          <li><a href="aboutMe.html#title">About Me</a></li>
+        </ul>
+        <ul class="icons">
+          <li>
+            <a
+              href="https://utc.joinhandshake.com/users/21955273"
+              class="fas fa-handshake"
+              target="_blank"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/zach-bianucci"
+              class="icon brands fa-linkedin-in"
+              target="_blank"
+              alt="Linked In"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/zbianucci"
+              class="icon brands fa-github"
+              target="_blank"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main -->
+      <div id="main">
+        <!-- Text and Images -->
+        <section class="post">
+          <header class="major">
+            <span class="date"></span>
+            <h1 id="title">Particle<br /></h1>
+            <p>
+              A fast-paced arcade-style game that challenges the player's
+              ability to react quickly to avoid enemies. Including Easy, Normal,
+              and Hard difficulties, Particle is designed for players of all
+              abilities.
+            </p>
+          </header>
+          <h3>Inspiration & Foundation</h3>
+          <!--particle game pic 1-->
+          <p>
+            <span class="image right"
+              ><img src="images/Gameplay1GIF.gif" alt="" /></span
+            >After finishing my Freshman year Data Structures and Program Design
+            class midst the Coronavirus epidemic, I was inspired to challenge my
+            capabilities by creating a fully functioning Java game. At this
+            point the "games" I have created only used the output window of the
+            IDE because my classes never required anything like a JFrame or
+            frame rates. I fully depended on RealTutsGML's series "Let's Build a
+            Game in Java" to provide me with a basis for a game idea and the
+            fundamentals of game design. I took his concept game originally
+            called "Wave" and expanded upon it. The original Wave game in the
+            tutorial, which is completely included in my game, includes a menu
+            system, player control via key input, a few basic enemies, a red
+            boss enemy, and many other concepts and ideas.
+          </p>
+
+          <!--The Basics-->
+          <h3>The Basics</h3>
+          <p>
+            The player is a default white square that must dodge oncoming square
+            enemies and bosses to avoid losing health. The player, enemies, and
+            bosses have "trails" that make the experience visually attractive
+            but do not have effect on actual gameplay or hitboxes. In normal and
+            easy mode, the player can utilize a shop were they spend money
+            (earned by staying on the screen over time) for health upgrades,
+            speed upgrades, and health refills. The player
+            <span class="image left"
+              ><img src="images/Gameplay2GIF.gif" alt="" /></span
+            >loses the game when their health bar is empty, and they win by
+            surviving past all of the enemies, resulting in a congratulations
+            visual. The concept of creating this gameplay initially blew my mind
+            but after following the YouTube tutorial, I understand its
+            simplicity. The game algorithm updates the screen of the game 60
+            frames per second (FPS). The fillRect() method of the Graphics class
+            in Java simply draws a solid rectangle with a designated size at a
+            desired location. The rectangle appears to move because my code will
+            draw the same rectangle 5 pixels in the corresponding direction the
+            player inputs. 5 pixels is a small distance, but since the game runs
+            60 FPS, the player moves 300 pixels a second or about half the
+            screen--making the game fast paced. All of the enemies and bosses
+            follow this concept but follow directions within the code or as
+            reactions to the player's position.
+          </p>
+
+          <!--Difficulties-->
+          <h3>Difficulty Choices</h3>
+          <p>
+            <span class="image right"
+              ><img src="images/Gameplay3GIF.gif" alt="" /></span
+            >Particle contains three difficulty options to choose from to make
+            the game enjoyable for all players. I designed the Normal difficulty
+            first because at the time I did not have intention for more
+            difficulties. Normal difficulty has the player start with a speed of
+            5 pixels per frame, allows access to the shop, and moderately spawns
+            enemies. The tutorial I followed showed how to make a Hard
+            difficulty, but I made many modifications to its suggestions. The
+            Hard difficulty has the player move 7 pixels per frame, does not
+            allow access to the shop, doubles the amount of initial health, and
+            has greater spawn rate of more difficult enemies. In the easy
+            difficulty, there is access to the shop, the normal amount of
+            health, and a low spawn rate of enemies.
+          </p>
+
+          <!--ColorMenu-->
+          <h3>Color Menu</h3>
+          <p>
+            One of the most challenging aspects that I purely created on my own
+            was the color menu of the game. The color menu allows the player to
+            choose from a variety of colors to change the color of their player
+            to what ever they may like.<span class="image left"
+              ><img src="images/ColorMenuGIF.gif" alt=""
+            /></span>
+            There are standard color options such as blue and pink, but the
+            color menu includes some interesting and fun choices to make
+            gameplay visually exciting. The random selection will generate a
+            random color from over 16 million different colors, the rwb and ogp
+            options generate a stream of alternating through the three
+            respective colors, the sparkle color goes randomly through a stream
+            of the 16 million colors, and the invisible option is simply colored
+            black to challenge the player matching the background (I can attest
+            that it is possible to beat the game invisible in easy mode). I am
+            proud of the visual of the menu itself as the player in the back
+            matches the color of the selected option, which can be fun to play
+            with.
+          </p>
+
+          <!--Closing-->
+          <h3>Closing Comments</h3>
+          <p>
+            Particle is completely free to play, so please use the download link
+            to try out the game for yourself! The download link will download a
+            JAR file which requires you to have the current version of Java
+            installed on your computer. Please note that I have had issues with
+            the JAR file running on Apple computers. Windows 10 will show a
+            warning about harming your computer, but I promise you it will not
+            harm your computer whatsoever (It only shows that warning because it
+            does not recognize my signature). I have also implement an online
+            version of the game, but due to Google Chrome's security
+            restrictions and dropped support of applets, I could only get the
+            game to run via Repl.it. This is the only safe and free way I was
+            able to implement my game to my website. Unfortunately, this online
+            JDE is extremely slow and laggy, so the gameplay experience is
+            nowhere near ideal. Sorry for the inconvenience, but it is the best
+            I can do so far. I would love to hear from you and your experience,
+            so I encourage to contact me via my social links and email provided.
+            Please know that Particle or Bianucci Games is not trademarked in
+            any way and does not have any intentional copyright infringement,
+            that being said, please contact me via email to resolve any issues,
+            and I will be quick to make appropriate changes. Particle was made
+            to allow myself to expand my programming knowledge, and educate and
+            entertain those that play the game.
+          </p>
+          <ul class="actions">
+            <li>
+              <a
+                href="https://zbianucci.github.io/files/Particle.jar"
+                class="button icon solid fa-download"
+                >Download</a
+              >
+            </li>
+          </ul>
+          <!--Particle Game implemented via repl.it-->
+          <iframe
+            height="480px"
+            width="100%"
+            src="https://repl.it/@ZachBianucci/CooperativeRectangularGigahertz?lite=1&outputonly=1"
+            scrolling="no"
+            frameborder="no"
+            allowtransparency="true"
+            allowfullscreen="true"
+            sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"
+          ></iframe>
+          <p>
+            Having issues with the game?<br />Try refreshing the page, click the
+            stop button then the play button, or click on "open in repl.it".
+          </p>
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <footer id="footer">
+        <section class="split contact">
+          <section class="alt">
+            <h3>Location</h3>
+            <p>
+              Attends the University of Tennessee at Chattanooga<br />
+              Lives in Cleveland, TN when not in school
+            </p>
+          </section>
+
+          <section>
+            <h3>Email</h3>
+            <p>
+              <a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a>
+            </p>
+          </section>
+          <section>
+            <h3>Social</h3>
+            <ul class="icons alt">
+              <li>
+                <a
+                  href="https://utc.joinhandshake.com/users/21955273"
+                  class="icon fas fa-handshake"
+                  target="_blank"
+                  ><span class="label">Handshake</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linkedin.com/in/zach-bianucci"
+                  class="icon brands alt fa-linkedin-in"
+                  target="_blank"
+                  ><span class="label">Instagram</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/zbianucci"
+                  class="icon brands alt fa-github"
+                  target="_blank"
+                  ><span class="label">GitHub</span></a
+                >
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>Credit</h3>
+            <p>
+              A free, fully responsive HTML5 + CSS3 site template designed by
+              <a href="https://twitter.com/ajlkn">@ajlkn</a> for
+              <a href="https://html5up.net">HTML5 UP</a> and released for free
+              under the<br />
+              <a href="https://html5up.net/license">Creative Commons license</a
+              >.
+            </p>
+            <!--<p><a href="#">(000) 000-0000</a></p>-->
+          </section>
+        </section>
+      </footer>
+
+      <!-- Copyright -->
+      <div id="copyright">
+        <ul>
+          <li>&copy; Untitled</li>
+          <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

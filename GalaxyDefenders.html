@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>Galaxy Defenders</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+      <link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <link rel="shortcut icon" type="image/png" href="images/LogoZB-pic.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <a href="index.html" class="logo">Galaxy Defenders</a>
+      </header>
+
+      <!-- Nav -->
+      <nav id="nav">
+        <ul class="links">
+          <li class="active"><a href="index.html#title">Main</a></li>
+          <li><a href="aboutMe.html#title">About Me</a></li>
+        </ul>
+        <ul class="icons">
+          <li>
+            <a
+              href="https://utc.joinhandshake.com/users/21955273"
+              class="fas fa-handshake"
+              target="_blank"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/zach-bianucci"
+              class="icon brands fa-linkedin-in"
+              target="_blank"
+              alt="Linked In"
+              ><span class="label"></span
+            ></a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/zbianucci"
+              class="icon brands fa-github"
+              target="_blank"
+              ><span class="label">GitHub</span></a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main -->
+      <div id="main">
+        <!-- Text and Images -->
+        <section class="post">
+          <header class="major">
+            <span class="date"></span>
+            <h1 id="title">Galaxy Defenders<br /></h1>
+            <p>
+              Your planet is under attack by aliens! Place your defenders and
+              eliminate the aliens before they can take over. Galaxy Defenders
+              is 2-D tower defense game that encourages the player to make
+              strategic decisions.
+            </p>
+            <ul class="actions special">
+              <li>
+                <a href="towerdefense/game.html" target="_blank" class="button"
+                  >Play Now</a
+                >
+              </li>
+            </ul>
+          </header>
+          <h3>Inspiration & Foundation</h3>
+          <!--particle game pic 1-->
+          <p>
+            <span class="image right"
+              ><a href="towerdefense/game.html" target="_blank"
+                ><img src="images/galaxyDefendersGameplay.gif" alt=""
+              /></a> </span
+            >Wanting to take my web development skills to the next level, I
+            decided to learn JavaScript in-depth. I felt that a strong
+            understanding of javascript was essential for developing any
+            website, so I started creating Galaxy Defenders through an online
+            JavaScript game tutorial by
+            <a
+              target="_blank"
+              href="https://www.youtube.com/watch?v=QxYg8-mhhhs&t=603s"
+              >Franks Laboratory</a
+            >
+            on YouTube. Like any programming tutorial that I follow, I take the
+            fundamental part of the project, learn from it, then start making
+            the code and project my own. So, the beginning of what I will be
+            discussing on this page is what I learned from the tutorial, but I
+            refined and organized the code later on to help myself expand and
+            build the video game as my own.
+          </p>
+          <h3>The Basics</h3>
+          <p>
+            Shown below is the fundamentals of Galaxy Defenders. Before I can
+            incorporate graphics and animations, I have to create boxes that act
+            as different objects in the game. The goal of the game is to prevent
+            the red enemy from reaching the left side of the screen. If you
+            click on the left side of the screen, you will place a blue defender
+            that will automatically start shooting bullets to lower the health
+            of the red enemies. Every blue defender placed costs 100 resources,
+            so place them carefully! You can hover your cursor over the yellow
+            boxes to add more to your resources amount. Go ahead and play around
+            and see if you can beat it!
+          </p>
+
+          <!--Beta 1-->
+          <canvas id="canvas1"></canvas>
+          <script src="towerdefense/scriptBeta1.js"></script>
+          <p>
+            Refresh your page if it says "game over" or "level complete" to play
+            again
+          </p>
+
+          <!--The Basics-->
+          <h3>Adding Animations</h3>
+          <p>
+            Much easier said than done, I add animations to the defenders and
+            enemies. Although it is difficult to implement in the JavaScript
+            code, the concept is surprisingly simple. Take a look at this
+            picture of the Enemy Crawler.
+            <span class="image left"
+              ><img src="towerdefense/sprites/crawlEnemy.png" alt="" /></span
+            >This is the same image used in my JavaScript code to animate its
+            movement. I section off each part of the image to make 5 frames that
+            the code rotates through as the enemy moves. The rotation can be
+            sped up or slowed down when its speed changes. Every character and
+            object in this game use that same concept with its own respective
+            frames to animate movement. A complicated character like a defender
+            has nearly 20 frames and only certain frames play during specific
+            actions. Play the more animated version below and see what changed!
+          </p>
+
+          <!--Beta 2-->
+          <canvas id="canvas2"></canvas>
+          <script src="towerdefense/scriptBeta2.js"></script>
+          <p>
+            Refresh your page if it says "game over" or "level complete" to play
+            again
+          </p>
+
+          <!--The Latest Version-->
+          <h3>The Latest Version</h3>
+          <p>
+            The latest version of Galaxy Defenders,
+            <a href="towerdefense/game.html" target="_blank">Alpha 1.1</a>, is a
+            version that is much more reflective of what I have in mind for the
+            final version of the game. Of course, I do not believe this to be
+            even close to the final product, but it gives a solid demonstration
+            of what the first level might look like.
+            <a href="towerdefense/game.html" target="_blank">Alpha 1.1</a> has a
+            menu system, full-color background, animated objects, and several
+            types of enemies, including some that shoot the defenders. Click the
+            button below to try it out!
+          </p>
+          <div align="center">
+            <a href="towerdefense/game.html" target="_blank"
+              ><h2>Galaxy Defenders Alpha 1.1</h2></a
+            >
+
+            <a href="towerdefense/game.html" target="_blank"
+              ><img src="images/galaxyDefendersGameplay.gif" alt=""
+            /></a>
+          </div>
+          <ul class="actions special">
+            <li>
+              <a href="towerdefense/game.html" target="_blank" class="button"
+                >Play Now</a
+              >
+            </li>
+          </ul>
+
+          <!--Closing-->
+          <h3>Closing Comments</h3>
+          <p>
+            This project has pushed me to think creatively as a programmer. I
+            have learned a significant amount about JavaScript, and so much so
+            that I would consider JavaScript as my strongest and most
+            comfortable programming language. I had to apply many concepts that
+            I learned from my Data Structures and Design course to make my code
+            efficiently and effectively run. It also made me think about the
+            long-term of my code and implementing designs that would be
+            beneficial when changes are implemented in the future. Although I am
+            proud of the current version, I hope to make a completed game. This
+            final game will make the enemies unique, implement bosses, have
+            either levels or an endless mode, have a store to buy powerups with,
+            play fun music and sounds effects to back the gameplay, and have a
+            high score board to compare players' scores.
+          </p>
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <footer id="footer">
+        <section class="split contact">
+          <section class="alt">
+            <h3>Location</h3>
+            <p>
+              Attends the University of Tennessee at Chattanooga<br />
+              Lives in Cleveland, TN when not in school
+            </p>
+          </section>
+
+          <section>
+            <h3>Email</h3>
+            <p>
+              <a href="mailto:zachbianucci@gmail.com">zachbianucci@gmail.com</a>
+            </p>
+          </section>
+          <section>
+            <h3>Social</h3>
+            <ul class="icons alt">
+              <li>
+                <a
+                  href="https://utc.joinhandshake.com/users/21955273"
+                  class="icon fas fa-handshake"
+                  target="_blank"
+                  ><span class="label">Handshake</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linkedin.com/in/zach-bianucci"
+                  class="icon brands alt fa-linkedin-in"
+                  target="_blank"
+                  ><span class="label">Instagram</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/zbianucci"
+                  class="icon brands alt fa-github"
+                  target="_blank"
+                  ><span class="label">GitHub</span></a
+                >
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>Credit</h3>
+            <p>
+              A free, fully responsive HTML5 + CSS3 site template designed by
+              <a href="https://twitter.com/ajlkn">@ajlkn</a> for
+              <a href="https://html5up.net">HTML5 UP</a> and released for free
+              under the<br />
+              <a href="https://html5up.net/license">Creative Commons license</a
+              >.
+            </p>
+            <!--<p><a href="#">(000) 000-0000</a></p>-->
+          </section>
+        </section>
+      </footer>
+
+      <!-- Copyright -->
+      <div id="copyright">
+        <ul>
+          <li>&copy; Untitled</li>
+          <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
