@@ -424,7 +424,8 @@ function runGame2() {
   }
 
   //resources
-  const amounts = [20, 30, 40];
+  //const amounts = [20, 30, 40];
+  const amounts = [30, 50, 70];
   class Resource {
     constructor() {
       this.x = Math.random() * (canvas.width - cellSize);
