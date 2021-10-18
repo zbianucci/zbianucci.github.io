@@ -382,9 +382,9 @@ function handleProjectiles() {
 
 //defenders
 const defender1 = new Image();
-defender1.src = "sprites/defender1.png";
+defender1.src = "sprites/defenders/defender1.png";
 const defender2 = new Image();
-defender2.src = "sprites/defender2.png";
+defender2.src = "sprites/defenders/defender2.png";
 class Defender {
   constructor(x, y, verticalPosition) {
     this.x = x;
@@ -447,7 +447,7 @@ class Defender {
       else this.frameX = this.minFrame;
       if (this.frameX === 15) this.shootNow = true;
     }
-    if (this.chosenDefender == 1) {
+    if (this.chosenDefender === 1) {
       if (this.shooting) {
         this.minFrame = 0;
         this.maxFrame = 16;
@@ -606,7 +606,7 @@ function handleFloatingMessages() {
 //enemy sprites and objects
 const enemyTypes = [];
 const crawlEnemyImage = new Image();
-crawlEnemyImage.src = "sprites/crawlEnemy.png";
+crawlEnemyImage.src = "sprites/enemies/crawlEnemy.png";
 enemyTypes.push(crawlEnemyImage); //TODO: change later
 const crawlEnemy = {
   image: crawlEnemyImage,
@@ -614,7 +614,7 @@ const crawlEnemy = {
   spriteHeight: 256,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
+  speed: .3,
   maxHealth: 100,
   enemyType: crawlEnemyImage,
   frameX: 0,
@@ -624,7 +624,7 @@ const crawlEnemy = {
 };
 
 const greenEnemyImage = new Image();
-greenEnemyImage.src = "sprites/greenEnemy.png";
+greenEnemyImage.src = "sprites/enemies/greenEnemy.png";
 enemyTypes.push(greenEnemyImage);
 const greenEnemy = {
   image: greenEnemyImage,
@@ -632,7 +632,7 @@ const greenEnemy = {
   spriteHeight: 144,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
+  speed: .7, //TODO: create specific speed for enemies
   maxHealth: 100,
   enemyType: greenEnemyImage,
   frameX: 0,
@@ -642,7 +642,7 @@ const greenEnemy = {
 };
 
 const orangeEnemyImage = new Image();
-orangeEnemyImage.src = "sprites/orangeEnemy.png";
+orangeEnemyImage.src = "sprites/enemies/orangeEnemy.png";
 enemyTypes.push(orangeEnemyImage);
 const orangeEnemy = {
   image: orangeEnemyImage,
@@ -650,7 +650,7 @@ const orangeEnemy = {
   spriteHeight: 256,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
+  speed: .6,
   maxHealth: 100,
   enemyType: orangeEnemyImage,
   frameX: 0,
@@ -660,7 +660,7 @@ const orangeEnemy = {
 };
 
 const purpleEnemyImage = new Image();
-purpleEnemyImage.src = "sprites/purpleEnemy.png";
+purpleEnemyImage.src = "sprites/enemies/purpleEnemy.png";
 enemyTypes.push(purpleEnemyImage);
 const purpleEnemy = {
   image: purpleEnemyImage,
@@ -678,7 +678,7 @@ const purpleEnemy = {
 };
 
 const redEnemyImage = new Image();
-redEnemyImage.src = "sprites/redEnemy.png";
+redEnemyImage.src = "sprites/enemies/redEnemy.png";
 enemyTypes.push(redEnemyImage);
 const redEnemy = {
   image: redEnemyImage,
@@ -696,7 +696,7 @@ const redEnemy = {
 };
 
 const rockEnemyImage = new Image();
-rockEnemyImage.src = "sprites/rockEnemy.png";
+rockEnemyImage.src = "sprites/enemies/rockEnemy.png";
 enemyTypes.push(rockEnemyImage);
 const rockEnemy = {
   image: rockEnemyImage,
@@ -714,7 +714,7 @@ const rockEnemy = {
 };
 
 const tealEnemyImage = new Image();
-tealEnemyImage.src = "sprites/tealEnemy.png";
+tealEnemyImage.src = "sprites/enemies/tealEnemy.png";
 enemyTypes.push(tealEnemyImage);
 const tealEnemy = {
   image: tealEnemyImage,
@@ -732,6 +732,7 @@ const tealEnemy = {
 };
 
 enemyOptions = [
+  crawlEnemy,
   greenEnemy,
   orangeEnemy,
   purpleEnemy,
@@ -818,7 +819,7 @@ function handleEnemies() {
       i--;
     }
   }
-  if (frame % 1000 == 0){
+  if (frame % 1000 == 0) {
     console.log(frame, enemiesInterval);
   }
   if (
@@ -831,8 +832,9 @@ function handleEnemies() {
     enemies.push(
       new Enemy(
         verticalPosition,
-        enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
-      )
+        //enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
+        greenEnemy
+        )
     );
     enemyPositions.push(verticalPosition);
     if (enemiesInterval > 120 && state == gameState.GAME) enemiesInterval -= 50; //change line to change game difficulty
@@ -1128,9 +1130,28 @@ function handleShooters() {
   }
 }
 
+// enemyOptions = [
+//   greenEnemy,
+//   orangeEnemy,
+//   purpleEnemy,
+//   redEnemy,
+//   rockEnemy,
+//   tealEnemy,
+// ];
+class Spawn {
+  //cell is 1-5 from top to bottom
+  constructor(enemy, cell, frame, health) {
+    this.enemy = enemy;
+    this.cell = cell;
+    this.frame = frame;
+  }
+}
+
+function handleSpawn() {}
+
 //resources
 const crystal = new Image();
-crystal.src = "sprites/crystal.png";
+crystal.src = "sprites/resources/crystal.png";
 const amounts = [40, 60, 80];
 class Resource {
   constructor() {

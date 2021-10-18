@@ -137,10 +137,10 @@ function runGame2() {
   //defenders
   const defender1 = new Image();
   //defender1.src = "sprites/defender1.png";
-  defender1.src = "towerdefense/sprites/defender1.png";
+  defender1.src = "towerdefense/sprites/defenders/defender1.png";
   const defender2 = new Image();
   //defender2.src = "sprites/defender2.png";
-  defender2.src = "towerdefense/sprites/defender2.png";
+  defender2.src = "towerdefense/sprites/defenders/defender2.png";
   class Defender {
     constructor(x, y) {
       this.x = x;
@@ -327,10 +327,10 @@ function runGame2() {
   //enemies
   const enemyTypes = [];
   const enemy1 = new Image();
-  enemy1.src = "towerdefense/sprites/crawlEnemy.png";
+  enemy1.src = "towerdefense/sprites/enemies/crawlEnemy.png";
   enemyTypes.push(enemy1);
   const enemy2 = new Image();
-  enemy2.src = "towerdefense/sprites/orangeEnemy.png";
+  enemy2.src = "towerdefense/sprites/enemies/orangeEnemy.png";
   enemyTypes.push(enemy2);
 
   class Enemy {
