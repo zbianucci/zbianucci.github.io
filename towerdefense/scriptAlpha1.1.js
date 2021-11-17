@@ -382,9 +382,9 @@ function handleProjectiles() {
 
 //defenders
 const defender1 = new Image();
-defender1.src = "sprites/defender1.png";
+defender1.src = "sprites/defenders/defender1.png";
 const defender2 = new Image();
-defender2.src = "sprites/defender2.png";
+defender2.src = "sprites/defenders/defender2.png";
 class Defender {
   constructor(x, y, verticalPosition) {
     this.x = x;
@@ -606,7 +606,7 @@ function handleFloatingMessages() {
 //enemy sprites and objects
 const enemyTypes = [];
 const crawlEnemyImage = new Image();
-crawlEnemyImage.src = "sprites/crawlEnemy.png";
+crawlEnemyImage.src = "sprites/enemies/crawlEnemy.png";
 enemyTypes.push(crawlEnemyImage); //TODO: change later
 const crawlEnemy = {
   image: crawlEnemyImage,
@@ -624,7 +624,7 @@ const crawlEnemy = {
 };
 
 const greenEnemyImage = new Image();
-greenEnemyImage.src = "sprites/greenEnemy.png";
+greenEnemyImage.src = "sprites/enemies/greenEnemy.png";
 enemyTypes.push(greenEnemyImage);
 const greenEnemy = {
   image: greenEnemyImage,
@@ -642,7 +642,7 @@ const greenEnemy = {
 };
 
 const orangeEnemyImage = new Image();
-orangeEnemyImage.src = "sprites/orangeEnemy.png";
+orangeEnemyImage.src = "sprites/enemies/orangeEnemy.png";
 enemyTypes.push(orangeEnemyImage);
 const orangeEnemy = {
   image: orangeEnemyImage,
@@ -660,7 +660,7 @@ const orangeEnemy = {
 };
 
 const purpleEnemyImage = new Image();
-purpleEnemyImage.src = "sprites/purpleEnemy.png";
+purpleEnemyImage.src = "sprites/enemies/purpleEnemy.png";
 enemyTypes.push(purpleEnemyImage);
 const purpleEnemy = {
   image: purpleEnemyImage,
@@ -678,7 +678,7 @@ const purpleEnemy = {
 };
 
 const redEnemyImage = new Image();
-redEnemyImage.src = "sprites/redEnemy.png";
+redEnemyImage.src = "sprites/enemies/redEnemy.png";
 enemyTypes.push(redEnemyImage);
 const redEnemy = {
   image: redEnemyImage,
@@ -696,7 +696,7 @@ const redEnemy = {
 };
 
 const rockEnemyImage = new Image();
-rockEnemyImage.src = "sprites/rockEnemy.png";
+rockEnemyImage.src = "sprites/enemies/rockEnemy.png";
 enemyTypes.push(rockEnemyImage);
 const rockEnemy = {
   image: rockEnemyImage,
@@ -714,7 +714,7 @@ const rockEnemy = {
 };
 
 const tealEnemyImage = new Image();
-tealEnemyImage.src = "sprites/tealEnemy.png";
+tealEnemyImage.src = "sprites/enemies/tealEnemy.png";
 enemyTypes.push(tealEnemyImage);
 const tealEnemy = {
   image: tealEnemyImage,
@@ -1130,7 +1130,7 @@ function handleShooters() {
 
 //resources
 const crystal = new Image();
-crystal.src = "sprites/crystal.png";
+crystal.src = "sprites/resources/crystal.png";
 const amounts = [40, 60, 80];
 class Resource {
   constructor() {
