@@ -52,6 +52,7 @@ const mouse = {
 };
 canvas.addEventListener("mousedown", function () {
   mouse.clicked = true;
+  playMusic();
 });
 canvas.addEventListener("mouseup", function () {
   mouse.clicked = false;
@@ -818,7 +819,7 @@ function handleEnemies() {
       i--;
     }
   }
-  if (frame % 1000 == 0){
+  if (frame % 1000 == 0) {
     console.log(frame, enemiesInterval);
   }
   if (
@@ -1665,3 +1666,9 @@ function collision(first, second) {
 window.addEventListener("resize", function () {
   canvasPosition = canvas.getBoundingClientRect();
 });
+
+//sound & music
+var backgroundMusic = new Audio("sound/Wound of The Cosmos.mp3");
+function playMusic() {
+  backgroundMusic.play();
+}
