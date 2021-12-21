@@ -834,8 +834,8 @@ function handleEnemies() {
     enemies.push(
       new Enemy(
         verticalPosition,
-        //enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
-        greenEnemy
+        enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
+        //greenEnemy
       )
     );
     enemyPositions.push(verticalPosition);
