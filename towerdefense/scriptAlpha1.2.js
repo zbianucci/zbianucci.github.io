@@ -1,4 +1,4 @@
-const version = "Alpha 1.3";
+const version = "Alpha 1.2";
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 canvas.width = 900;

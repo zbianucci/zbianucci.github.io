@@ -99,9 +99,9 @@ function handleGameGrid() {
 
 //projectiles
 const bullet1 = new Image();
-bullet1.src = "sprites/d1bullet.png";
+bullet1.src = "sprites/bullets/d1bullet.png";
 const bullet2 = new Image();
-bullet2.src = "sprites/d2bullet.png";
+bullet2.src = "sprites/bullets/d2bullet.png";
 class Projectile {
   constructor(x, y, color) {
     this.x = x;
@@ -384,10 +384,10 @@ function handleFloatingMessages() {
 //enemies
 const enemyTypes = [];
 const enemy1 = new Image();
-enemy1.src = "sprites/enemies/enemy1.png";
+enemy1.src = "sprites/enemies/crawlEnemy.png";
 enemyTypes.push(enemy1);
 const enemy2 = new Image();
-enemy2.src = "sprites/enemies/enemy2.png";
+enemy2.src = "sprites/enemies/orangeEnemy.png";
 enemyTypes.push(enemy2);
 
 class Enemy {
@@ -479,7 +479,7 @@ function handleEnemies() {
 
 //resources
 const crystal = new Image();
-crystal.src = "sprites/crystal.png";
+crystal.src = "sprites/resources/crystal.png";
 const amounts = [40, 60, 80];
 class Resource {
   constructor() {

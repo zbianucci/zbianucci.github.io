@@ -52,7 +52,6 @@ const mouse = {
 };
 canvas.addEventListener("mousedown", function () {
   mouse.clicked = true;
-  playMusic();
 });
 canvas.addEventListener("mouseup", function () {
   mouse.clicked = false;
@@ -1234,7 +1233,7 @@ canvas.addEventListener("click", function () {
     state == gameState.PAUSE
   ) {
     state = gameState.GAME;
-    reset();
+    //reset();
     return;
   }
   if (gridPositionY < cellSize || !(state == gameState.GAME)) return; //mouse in blue bar
@@ -1666,9 +1665,3 @@ function collision(first, second) {
 window.addEventListener("resize", function () {
   canvasPosition = canvas.getBoundingClientRect();
 });
-
-//sound & music
-var backgroundMusic = new Audio("sound/Wound of The Cosmos.mp3");
-function playMusic() {
-  backgroundMusic.play();
-}
