@@ -448,9 +448,10 @@ class Defender {
   }
   update() {
     if (frame % 10 === 0) {
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = this.minFrame;
-      if (this.frameX === 15) this.shootNow = true;
+      if (this.frameX > this.minFrame) this.frameX--;
+      else this.frameX = this.maxFrame;
+      if (this.frameX === 15 && this.chosenDefender === 1) this.shootNow = true;
+      if (this.frameX === 18 && this.chosenDefender === 2) this.shootNow = true;
     }
     if (this.chosenDefender === 1) {
       if (this.shooting) {
