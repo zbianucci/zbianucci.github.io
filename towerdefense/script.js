@@ -1,4 +1,4 @@
-const version = "Alpha 1.3";
+const version = "Alpha 2.0";
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 canvas.width = 900;
@@ -14,13 +14,14 @@ const maxResources = 300;
 let numberOfResources = maxResources;
 let enemiesInterval = maxEnemiesInterval;
 let shootersInterval = maxShootersInterval;
+let menuSpriteInterval = 100;
 let frame = 0;
 //let gameOver = false;
 let score = 0;
 const winningScore = 100;
 let chosenDefender = 1; //boy for 1, girl for 2
 let clicked = false;
-let mute = false;
+let mute = true;
 let paused = false;
 
 let gameGrid = [];
@@ -32,6 +33,7 @@ let defenderPositions = [];
 let shooterPositions = [];
 let projectiles = [];
 let resources = [];
+let menuSprites = [];
 
 //enum of all the possible game states
 const gameState = {
@@ -42,6 +44,7 @@ const gameState = {
   PAUSE: "pause",
   SHOP: "shop",
 };
+//let state = gameState.SHOP;
 let state = gameState.MENU;
 
 //mouse
@@ -450,7 +453,8 @@ class Defender {
     if (frame % 10 === 0) {
       if (this.frameX > this.minFrame) this.frameX--;
       else this.frameX = this.maxFrame;
-      if (this.frameX === 15) this.shootNow = true;
+      if (this.frameX === 15 && this.chosenDefender === 1) this.shootNow = true;
+      if (this.frameX === 18 && this.chosenDefender === 2) this.shootNow = true;
     }
     /*
     if (frame % 10 === 0) {
@@ -841,8 +845,8 @@ function handleEnemies() {
     enemies.push(
       new Enemy(
         verticalPosition,
-        //enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
-        greenEnemy
+        enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
+        //greenEnemy
       )
     );
     enemyPositions.push(verticalPosition);
@@ -1163,9 +1167,9 @@ const crystal = new Image();
 crystal.src = "sprites/resources/crystal.png";
 const amounts = [40, 60, 80];
 class Resource {
-  constructor() {
-    this.x = Math.random() * (canvas.width - cellSize);
-    this.y = (Math.floor(Math.random() * 5) + 1) * cellSize + 25;
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
     this.width = cellSize * 0.6;
     this.height = cellSize * 0.6;
     this.amount = amounts[Math.floor(Math.random() * amounts.length)];
@@ -1175,6 +1179,8 @@ class Resource {
     this.maxFrame = 7;
     this.spriteWidth = 130;
     this.spriteHeight = 128;
+    this.grabbed = false;
+    this.done = false;
   }
   draw() {
     // ctx.fillStyle = "yellow";
@@ -1203,12 +1209,23 @@ class Resource {
 }
 function handleResources() {
   if (frame % 500 === 0 && score < winningScore) {
-    resources.push(new Resource());
+    resources.push(
+      new Resource(
+        Math.random() * (canvas.width - cellSize),
+        (Math.floor(Math.random() * 5) + 1) * cellSize + 25
+      )
+    );
   }
   for (let i = 0; i < resources.length; i++) {
     resources[i].update();
     resources[i].draw();
-    if (resources[i] && mouse.x && mouse.y && collision(resources[i], mouse)) {
+    if (
+      resources[i] &&
+      mouse.x &&
+      mouse.y &&
+      collision(resources[i], mouse) &&
+      !resources[i].grabbed
+    ) {
       numberOfResources += resources[i].amount;
       floatingMessages.push(
         new floatingMessage(
@@ -1222,18 +1239,46 @@ function handleResources() {
       floatingMessages.push(
         new floatingMessage("+" + resources[i].amount, 470, 85, 30, "gold")
       );
+      resources[i].grabbed = true;
       resources.splice(i, 1);
       i--;
     }
+    // if (resources[i].grabbed){
+    //   ctx.drawImage(
+    //     crystal,
+    //     resources[i].frameX * resources[i].spriteWidth,
+    //     0,
+    //     resources[i].spriteWidth,
+    //     resources[i].spriteHeight,
+    //     resources[i].x,
+    //     resources[i].y + 10,
+    //     resources[i].width,
+    //     resources[i].height
+    //   );
+    //   resources[i].frameX+=1;
+    //   if (resources[i].frameX===13){
+    // resources.splice(i, 1);
+    // i--;
+    //}
+    // }
+    //if(frame===)
+    // resources.splice(i, 1);
+    // i--;
+
+    //if ()
   }
 }
 
 //utilities
-function handleGameStatus() {
+function handleGameStatus(shop = false) {
   ctx.fillStyle = "gold";
   ctx.font = "30px Orbitron";
-  ctx.fillText("Score: " + score, 180, 40);
-  ctx.fillText("Resources: " + numberOfResources, 180, 80);
+  let x = 180;
+  if (shop) {
+    x = 20;
+  }
+  ctx.fillText("Score: " + score, x, 40);
+  ctx.fillText("Resources: " + numberOfResources, x, 80);
   if (score >= winningScore && enemies.length === 0 && shooters.length === 0) {
     state = gameState.WIN;
   }
@@ -1266,6 +1311,20 @@ canvas.addEventListener("click", function () {
   ) {
     state = gameState.PAUSE;
     return;
+  } else if (
+    //shop button
+    mouse.y >= 60 &&
+    mouse.y <= 85 &&
+    mouse.x >= 809 &&
+    mouse.x <= 884
+  ) {
+    if (state == gameState.GAME) {
+      state = gameState.SHOP;
+      return;
+    } else if (state == gameState.SHOP) {
+      state = gameState.GAME;
+      return;
+    }
   } else if (
     mouse.y >= 10 &&
     mouse.y <= 50 &&
@@ -1388,6 +1447,9 @@ function drawSound(mute) {
   ctx.beginPath();
   //ctx.arc(830, 30, 10, 5, 7.5, false); //third arc
   ctx.stroke();
+  //ctx.beginPath();
+  //ctx.rect(20, 20, 150, 100);
+  ctx.fillRect(809, 26, 6, 8);
   //ctx.arc(820, 30, 10, Math.PI*3/2, Math.PI*5/2, false);
   /*ctx.arc(x: number, y: number, radius: number,
   startAngle: number, endAngle: number, counterclockwise?: boolean*/
@@ -1402,7 +1464,31 @@ function drawSound(mute) {
   }
   playMusic(mute);
 }
-//mute button
+//shop button
+function drawShopButton() {
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(809, 60);
+  ctx.lineTo(884, 60); //top line
+  ctx.moveTo(809, 85);
+  ctx.lineTo(884, 85); //bottom line
+  ctx.moveTo(809, 60);
+  ctx.lineTo(809, 85); //left line
+  ctx.moveTo(884, 60);
+  ctx.lineTo(884, 85); //right line
+  //ctx.arc(824, 50, 19, 0, Math.PI * 2, true); //circle
+  ctx.stroke();
+  ctx.font = "20px Orbitron";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  if (state == gameState.GAME) {
+    ctx.fillText("SHOP", (809 + 884) / 2, (55 + 90) / 2 + 7);
+  } else if (state == gameState.SHOP) {
+    ctx.fillText("BACK", (809 + 884) / 2, (55 + 90) / 2 + 7);
+  }
+  ctx.textAlign = "left";
+}
 
 //background
 const backgroundColor = new Image();
@@ -1614,6 +1700,514 @@ class Menu {
     ctx.fillText("DEFENDERS", 100, 250);
   }
 }
+//Shop Menu
+const shopMenu = new Image();
+shopMenu.src = "shop/ShopMenu.png";
+const shopHoveredIcons = new Image();
+shopHoveredIcons.src = "shop/ShopHoveredIcons.png";
+const shopInactiveIcons = new Image();
+shopInactiveIcons.src = "shop/ShopInactiveIcons.png";
+function drawShop() {
+  const imageWidth = 1920;
+  const imageHeight = 1080;
+  // ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+  ctx.drawImage(
+    backgroundColor,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+  ctx.drawImage(
+    stars,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height - 300
+  );
+  ctx.drawImage(
+    moon,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    0,
+    canvas.width - 20,
+    canvas.height - 100
+  );
+  ctx.drawImage(
+    factory,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    86,
+    canvas.width,
+    canvas.height - 200
+  );
+  ctx.drawImage(
+    dirt,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+  ctx.drawImage(
+    clouds,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    50,
+    0,
+    canvas.width,
+    canvas.height - 100
+  );
+  ctx.drawImage(
+    ship,
+    0,
+    0,
+    imageWidth,
+    imageHeight,
+    0,
+    170,
+    canvas.width * 0.8,
+    canvas.height * 0.8
+  );
+  ctx.drawImage(
+    shopMenu,
+    0,
+    0,
+    470,
+    538,
+    canvas.width * 0.48,
+    canvas.height * 0.022,
+    470,
+    538
+  );
+  ctx.fillStyle = "white";
+  ctx.font = "45px Orbitron";
+  ctx.fillText("SHOP", 507, 95);
+  let selectedItem = null;
+  for (let i = 0; i < 16; i++) {
+    if (items[i].selected) {
+      selectedItem = items[i];
+      ctx.font = "16px Orbitron";
+      let description = selectedItem.description.split("\n");
+      for (let j = 0; j < description.length; j++) {
+        ctx.fillText(description[j], 467, 474 + j * 20);
+      }
+      ctx.textAlign = "center";
+      let cost = "$" + items[i].cost;
+      //(865-815)/2 = 840
+      ctx.font = "15px Orbitron";
+      ctx.fillStyle = "gold";
+      ctx.fillText(cost, 840, 495);
+      ctx.fillStyle = "white";
+      ctx.font = "17px Orbitron";
+      let name = selectedItem.name.split("\n");
+      if (name.length > 1) {
+        for (let j = 0; j < name.length; j++) {
+          ctx.fillText(name[j], 822, 170 + j * 20);
+        }
+      } else {
+        ctx.fillText(items[i].name, 822, 180);
+      }
+      ctx.textAlign = "left";
+    }
+  }
+}
+let item1 = {
+  name: "Health\nPotion",
+  description: "Replenish all defenders' health back\nto 100%",
+  cost: 50,
+  sx: 35,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35,
+  dy: canvas.height * 0.022 + 228,
+  x: 467, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item2 = {
+  name: "Health\nCrystals",
+  description: "Expand all defenders' maximum\nhealth by 10%",
+  cost: 100,
+  sx: 35 + 68,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35 + 68,
+  dy: canvas.height * 0.022 + 228,
+  x: 467 + 68, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item3 = {
+  name: "Power\nBullets",
+  description: "Make bullets 15% more destructive",
+  cost: 250,
+  sx: 35 + 68 * 2,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35 + 68 * 2,
+  dy: canvas.height * 0.022 + 228,
+  x: 467 + 68 * 2, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item4 = {
+  name: "Speed\nBullets",
+  description: "Increase the speed of bullets by 10%",
+  cost: 400,
+  sx: 35 + 68 * 3,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35 + 68 * 3,
+  dy: canvas.height * 0.022 + 228,
+  x: 467 + 68 * 3, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item5 = {
+  name: "Golden\nFin",
+  description: "Earn twice as many resources from\nevery enemy defeated",
+  cost: 15,
+  sx: 35 + 68 * 4,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35 + 68 * 4,
+  dy: canvas.height * 0.022 + 228,
+  x: 467 + 68 * 4, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item6 = {
+  name: "Grenade",
+  description: "Immediately destroy all enemies on\nscreen in one use",
+  cost: 5,
+  sx: 35 + 68 * 5,
+  sy: 228,
+  dx: canvas.width * 0.48 + 35 + 68 * 5,
+  dy: canvas.height * 0.022 + 228,
+  x: 467 + 68 * 5, //68
+  y: 240, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item7 = {
+  name: "Honey",
+  description: "Slow enemies down by 20% by\nspreading honey on the ground",
+  cost: 0,
+  sx: 35,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item8 = {
+  name: "Sharp\nShooter",
+  description: "Upgrade guns to reload faster by 25%",
+  cost: 0,
+  sx: 35 + 68,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35 + 68,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467 + 68, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item9 = {
+  name: "Rocks",
+  description: "They're rocks. Maybe they're lucky.",
+  cost: 0,
+  sx: 35 + 68 * 2,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35 + 68 * 2,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467 + 68 * 2, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item10 = {
+  name: "Parasite",
+  description: "Enemies take continual damage for\nthe next 120 seconds",
+  cost: 0,
+  sx: 35 + 68 * 3,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35 + 68 * 3,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467 + 68 * 3, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item11 = {
+  name: "Basic\nArmor",
+  description: "Protects defenders for 50 health\npoints",
+  cost: 0,
+  sx: 35 + 68 * 4,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35 + 68 * 4,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467 + 68 * 4, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item12 = {
+  name: "Advanced\nArmor",
+  description: "Protects defenders for 200 health\npoints",
+  cost: 0,
+  sx: 35 + 68 * 5,
+  sy: 228 + 68,
+  dx: canvas.width * 0.48 + 35 + 68 * 5,
+  dy: canvas.height * 0.022 + 228 + 68,
+  x: 467 + 68 * 5, //68
+  y: 240 + 68, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item13 = {
+  name: "Freeze\nBlast",
+  description: "Freeze all on-screen enemies in place\nfor 30 seconds",
+  cost: 0,
+  sx: 35 + 68 * 0,
+  sy: 228 + 68 * 2,
+  dx: canvas.width * 0.48 + 35 + 68 * 0,
+  dy: canvas.height * 0.022 + 228 + 68 * 2,
+  x: 467 + 68 * 0, //68
+  y: 240 + 68 * 2, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item14 = {
+  name: "Defense\nBlast",
+  description:
+    "Enemy attacks have 25% less effect\non defenders",
+  cost: 0,
+  sx: 35 + 68 * 1,
+  sy: 228 + 68 * 2,
+  dx: canvas.width * 0.48 + 35 + 68 * 1,
+  dy: canvas.height * 0.022 + 228 + 68 * 2,
+  x: 467 + 68 * 1, //68
+  y: 240 + 68 * 2, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item15 = {
+  name: "Amulet of\nImmunity",
+  description: "Defenders earn complete immunity\nfor 60 seconds",
+  cost: 0,
+  sx: 35 + 68 * 2,
+  sy: 228 + 68 * 2,
+  dx: canvas.width * 0.48 + 35 + 68 * 2,
+  dy: canvas.height * 0.022 + 228 + 68 * 2,
+  x: 467 + 68 * 2, //68
+  y: 240 + 68 * 2, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let item16 = {
+  name: "Dust\nStorm",
+  description: "50% less enemies spawn for the next\n60 seconds",
+  cost: 0,
+  sx: 35 + 68 * 3,
+  sy: 228 + 68 * 2,
+  dx: canvas.width * 0.48 + 35 + 68 * 3,
+  dy: canvas.height * 0.022 + 228 + 68 * 2,
+  x: 467 + 68 * 3, //68
+  y: 240 + 68 * 2, //68
+  width: 64,
+  height: 64,
+  active: true,
+  selected: false,
+};
+let items = [
+  item1,
+  item2,
+  item3,
+  item4,
+  item5,
+  item6,
+  item7,
+  item8,
+  item9,
+  item10,
+  item11,
+  item12,
+  item13,
+  item14,
+  item15,
+  item16,
+];
+function chooseIcon() {
+  for (let i = 0; i < 16; i++) {
+    if (
+      //checks to see if mouse is hovered over item and the item is active
+      (collision(mouse, items[i]) &&
+        state == gameState.SHOP &&
+        !(mouse.x in window || mouse.y in window) &&
+        items[i].active) ||
+      items[i].selected //&& !items[i].active
+    ) {
+      if (mouse.clicked && state == gameState.SHOP) {
+        for (let j = 0; j < 16; j++) {
+          items[j].selected = false; //ensures that every other item is not selected
+        }
+        items[i].selected = true;
+        //select the icon and keep it highlighted while others are highlighted from hovering
+      }
+      ctx.drawImage(
+        shopHoveredIcons,
+        items[i].sx,
+        items[i].sy,
+        items[i].width,
+        items[i].height,
+        items[i].dx,
+        items[i].dy,
+        items[i].width,
+        items[i].height
+      );
+    } else if (!items[i].active) {
+      ctx.drawImage(
+        shopInactiveIcons,
+        items[i].sx,
+        items[i].sy,
+        items[i].width,
+        items[i].height,
+        items[i].dx,
+        items[i].dy,
+        items[i].width,
+        items[i].height
+      );
+    }
+  }
+}
+
+//Menu Animations
+//sprites & objects for flying and flying/shooting defenders
+//sprites & objects for enemies moving
+//objects
+const defender1flying = new Image();
+defender1flying.src = "sprites/menu/defender1flying.png";
+const defender2flying = new Image();
+defender2flying.src = "sprites/menu/defender2flying.png";
+class MenuAnimation {
+  constructor(x, y, chosenDefender, verticalPosition) {
+    //animationType?
+    this.x = x;
+    this.y = y;
+    this.width = cellSize - cellGap * 2;
+    this.height = cellSize - cellGap * 2;
+    this.speed = Math.random() * 1 + 1.8;
+    this.frameX = 0;
+    this.frameY = 0;
+    this.spriteWidth = 194;
+    this.spriteHeight = 194;
+    this.minFrame = 0;
+    if (chosenDefender === 1) this.maxFrame = 6;
+    else this.maxFrame = 7;
+    this.chosenDefender = chosenDefender;
+    this.verticalPosition = verticalPosition;
+    //this.animationType = animationType;
+  }
+  draw() {
+    let defender;
+    if (this.chosenDefender === 1) defender = defender1flying;
+    else defender = defender2flying;
+    ctx.drawImage(
+      defender,
+      this.frameX * this.spriteWidth,
+      0,
+      this.spriteWidth,
+      this.spriteHeight,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+  }
+  update() {
+    this.x += this.speed;
+    //Math.random() * 0.2 + 1.8;
+    if (frame % 10 === 0) {
+      if (this.frameX > this.minFrame) this.frameX--;
+      else this.frameX = this.maxFrame;
+    }
+  }
+}
+function handleMenuAnimations() {
+  for (let i = 0; i < menuSprites.length; i++) {
+    menuSprites[i].update();
+    menuSprites[i].draw();
+    if (menuSprites[i].x >= canvas.width + 20) {
+      menuSprites.splice(i, 1);
+      i--;
+    }
+  }
+  if (
+    frame % menuSpriteInterval === 4 &&
+    (state == gameState.MENU ||
+      state == gameState.WIN ||
+      state == gameState.GAMEOVER ||
+      state == gameState.SHOP)
+  ) {
+    let verticalPosition = Math.random() * (canvas.height - 300) + 200;
+    menuSprites.push(
+      new MenuAnimation(-150, verticalPosition, Math.ceil(Math.random() * 2))
+    );
+  }
+}
 
 //Button
 class Button {
@@ -1653,6 +2247,8 @@ function clickButton(s) {
     state = s;
     if (state == gameState.GAME) {
       reset();
+    } else if (state == gameState.PAUSE) {
+      state = gameState.MENU;
     }
   }
 }
@@ -1667,6 +2263,7 @@ function reset() {
   shooterPositions = [];
   projectiles = [];
   resources = [];
+  menuSprites = [];
   score = 0;
   frame = 1;
   numberOfResources = maxResources;
@@ -1695,23 +2292,26 @@ function animate() {
       handleFloatingMessages();
       drawPause(true);
       drawSound(mute);
+      drawShopButton();
+      menuAnimation = [];
       frame++;
       break;
     case gameState.MENU:
       menu = new Menu();
       menu.draw();
+      handleMenuAnimations();
       button = new Button();
       button.draw();
       ctx.fillStyle = "white";
       ctx.font = "40px Orbitron";
       ctx.fillText("START", 372, 485);
       clickButton(gameState.GAME);
+      drawSound(mute);
       frame++;
       break;
     case gameState.GAMEOVER:
       ctx.fillStyle = "white";
       ctx.font = "90px Orbitron";
-      console.log("Gameover");
       ctx.drawImage(
         menuBackground,
         0,
@@ -1723,12 +2323,14 @@ function animate() {
         canvas.width,
         canvas.height
       );
+      handleMenuAnimations();
       ctx.fillText("GAME OVER", 130, 200);
       button = new Button();
       button.draw();
       ctx.font = "40px Orbitron";
       ctx.fillText("MAIN MENU", 320, 485);
       clickButton(gameState.MENU);
+      drawSound(mute);
       //reset();
       frame++;
       break;
@@ -1746,6 +2348,7 @@ function animate() {
         canvas.width,
         canvas.height
       );
+      handleMenuAnimations();
       ctx.fillText("LEVEL COMPLETE", 130, 200);
       ctx.font = "30px Orbitron";
       ctx.fillText("You win with " + score + " points!", 267, 300);
@@ -1755,25 +2358,36 @@ function animate() {
       ctx.fillText("MAIN MENU", 320, 485);
       clickButton(gameState.MENU);
       //reset();
+      drawSound(mute);
       frame++;
       break;
     case gameState.PAUSE:
       tile();
       background();
-      // handleGameGrid();//
-      // handleDefenders();
-      // handleResources();
-      // handleProjectiles();
-      // handleEnemies();//
       handleFeatures();
       chooseDefender();
       handleGameStatus();
       drawSound(mute);
-      //handleFloatingMessages();
       drawPause();
       ctx.fillStyle = "white";
       ctx.font = "90px Orbitron";
       ctx.fillText("GAME PAUSED", 70, 350);
+      button = new Button();
+      button.draw();
+      ctx.font = "40px Orbitron";
+      ctx.fillText("QUIT", 400, 485);
+      clickButton(gameState.MENU);
+      break;
+    case gameState.SHOP:
+      drawShop();
+      handleMenuAnimations();
+      drawSound(mute);
+      chooseIcon();
+      handleGameStatus((shop = true));
+      drawShopButton();
+      //frame++; //may want to remove
+      // ctx.font = "40px Orbitron";
+      // ctx.fillText("QUIT", 400, 485);
       break;
   }
   requestAnimationFrame(animate);
@@ -1800,10 +2414,12 @@ window.addEventListener("resize", function () {
 //sound & music
 let backgroundMusic = new Audio("sound/Wound of The Cosmos.mp3");
 function playMusic(mute) {
-  if (!mute) {
-    backgroundMusic.play();
-  } else {
-    backgroundMusic.pause();
-  }
+  try {
+    if (!mute) {
+      backgroundMusic.play();
+    } else {
+      backgroundMusic.pause();
+    }
+  } catch (e) {}
   //playMusic(); //need to loop somehow
 }
