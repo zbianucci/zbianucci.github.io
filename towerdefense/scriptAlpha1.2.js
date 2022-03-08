@@ -391,7 +391,7 @@ defender1.src = "sprites/defenders/defender1.png";
 const defender2 = new Image();
 defender2.src = "sprites/defenders/defender2.png";
 class Defender {
-  constructor(x, y, verticalPosition) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
     this.width = cellSize - cellGap * 2;
@@ -408,7 +408,7 @@ class Defender {
     this.minFrame = 0;
     this.maxFrame = 16;
     this.chosenDefender = chosenDefender;
-    this.verticalPosition = verticalPosition;
+    //this.verticalPosition = verticalPosition;
   }
   draw() {
     //ctx.fillStyle = "blue";

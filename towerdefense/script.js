@@ -10,7 +10,7 @@ const cellGap = 3;
 
 const maxEnemiesInterval = 850;
 const maxShootersInterval = 950;
-const maxResources = 300;
+const maxResources = 1000;
 let numberOfResources = maxResources;
 let enemiesInterval = maxEnemiesInterval;
 let shootersInterval = maxShootersInterval;
@@ -19,7 +19,6 @@ let frame = 0;
 //let gameOver = false;
 let score = 0;
 const winningScore = 100;
-let chosenDefender = 1; //boy for 1, girl for 2
 let clicked = false;
 let mute = true;
 let paused = false;
@@ -44,8 +43,8 @@ const gameState = {
   PAUSE: "pause",
   SHOP: "shop",
 };
-//let state = gameState.SHOP;
-let state = gameState.MENU;
+let state = gameState.SHOP;
+//let state = gameState.MENU;
 
 //mouse
 const mouse = {
@@ -121,7 +120,7 @@ const bullet1 = {
   width: 40,
   height: 40,
   speed: 5,
-  power: 20,
+  power: 5,
   type: "defender",
   frameX: 0,
   frameY: 0,
@@ -142,7 +141,7 @@ const bullet2 = {
   width: 40,
   height: 40,
   speed: 5,
-  power: 20,
+  power: 5,
   type: "defender",
   frameX: 0,
   frameY: 0,
@@ -334,6 +333,15 @@ function handleProjectiles() {
     if (projectiles[i].type == "defender") {
       for (let j = 0; j < enemies.length; j++) {
         //TODO: fix this
+        if (powerBullets.amount > 0) {
+          //maybe make it == 1?
+          for (let i = 0; i < defenders.length; i++) {
+            defenders[i].bullet.power *= 1.15;
+          }
+          defender1.power *= 1.15;
+          defender2.power *= 1.15;
+          powerBullets.amount--;
+        }
         if (
           enemies[j] &&
           projectiles[i] &&
@@ -389,29 +397,74 @@ function handleProjectiles() {
 }
 
 //defenders
-const defender1 = new Image();
-defender1.src = "sprites/defenders/defender1.png";
-const defender2 = new Image();
-defender2.src = "sprites/defenders/defender2.png";
+const defender1Image = new Image();
+defender1Image.src = "sprites/defenders/defender1.png";
+const defender2Image = new Image();
+defender2Image.src = "sprites/defenders/defender2.png";
+const defender1 = {
+  image: defender1Image,
+  spriteWidth: 194,
+  spriteHeight: 194,
+  width: cellSize - cellGap * 2,
+  height: cellSize - cellGap * 2,
+  maxHealth: 100,
+  shooterType: defender1Image,
+  frameX: 0,
+  frameY: 0,
+  minFrame: 0,
+  shootFrame: 15, //18 for defender2
+  maxFrame: 16, //12 for defender2
+  minIdleFrame: 17, //
+  maxIdleFrame: 24,
+  bullet: bullet1,
+  reloadSpeed: 1,
+  //add power for the amount of damage that a bullet creates
+};
+const defender2 = {
+  image: defender2Image,
+  spriteWidth: 194,
+  spriteHeight: 194,
+  width: cellSize - cellGap * 2,
+  height: cellSize - cellGap * 2,
+  maxHealth: 100,
+  shooterType: defender2Image,
+  frameX: 0,
+  frameY: 0,
+  minFrame: 13,
+  shootFrame: 18, //18 for defender2
+  maxFrame: 28, //12 for defender2
+  minIdleFrame: 0, //0
+  maxIdleFrame: 12, //12
+  bullet: bullet2,
+  reloadSpeed: 1,
+  //add power for the amount of damage that a bullet creates
+};
+let chosenDefender = defender1; //boy for 1, girl for 2
 class Defender {
-  constructor(x, y, verticalPosition) {
+  constructor(x, y, defender) {
     this.x = x;
     this.y = y;
-    this.width = cellSize - cellGap * 2;
-    this.height = cellSize - cellGap * 2;
+    this.width = defender.width;
+    this.height = defender.height;
     this.shooting = false; //enemies will only shoot when defender is on their row
     this.shootNow = false;
-    this.health = 100;
+    this.health = defender.maxHealth;
+    this.maxHealth = defender.maxHealth;
     this.projectiles = [];
     this.timer = 0;
-    this.frameX = 0;
-    this.frameY = 0;
-    this.spriteWidth = 194;
-    this.spriteHeight = 194;
-    this.minFrame = 0;
-    this.maxFrame = 16;
-    this.chosenDefender = chosenDefender;
-    this.verticalPosition = verticalPosition;
+    this.frameX = defender.frameX;
+    this.frameY = defender.frameY;
+    this.spriteWidth = defender.spriteWidth;
+    this.spriteHeight = defender.spriteHeight;
+    this.minFrame = defender.minFrame;
+    this.shootFrame = defender.shootFrame;
+    this.maxFrame = defender.maxFrame;
+    this.minIdleFrame = defender.minIdleFrame;
+    this.maxIdleFrame = defender.maxIdleFrame;
+    this.image = defender.image;
+    //this.verticalPosition = verticalPosition;
+    this.bullet = defender.bullet;
+    this.reloadSpeed = defender.reloadSpeed;
   }
   draw() {
     //ctx.fillStyle = "blue";
@@ -419,74 +472,63 @@ class Defender {
     ctx.fillStyle = "white";
     ctx.font = "30px Orbitron";
     if (Math.floor(this.health) != 0) {
+      //health displayed behind defender
       ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
     }
-    if (this.chosenDefender === 1) {
-      ctx.drawImage(
-        defender1,
-        this.frameX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      );
-    } else if (this.chosenDefender === 2) {
-      ctx.drawImage(
-        defender2,
-        this.frameX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      );
-    }
+    ctx.drawImage(
+      //image of defender
+      this.image,
+      this.frameX * this.spriteWidth,
+      0,
+      this.spriteWidth,
+      this.spriteHeight,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
     // ctx.strokeStyle = "white"; //uncomment for hitbox debugging
     // ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
   update() {
-    if (frame % 10 === 0) {
-      if (this.frameX > this.minFrame) this.frameX--;
-      else this.frameX = this.maxFrame;
-      if (this.frameX === 15 && this.chosenDefender === 1) this.shootNow = true;
-      if (this.frameX === 18 && this.chosenDefender === 2) this.shootNow = true;
-    }
-    /*
-    if (frame % 10 === 0) {
-      if (this.frameX < this.maxFrame) this.frameX++;
-      else this.frameX = this.minFrame;
-      if (this.frameX === 15) this.shootNow = true;
-    }
-    */
-    if (this.chosenDefender === 1) {
-      if (this.shooting) {
-        this.minFrame = 0;
-        this.maxFrame = 16;
-      } else {
-        this.minFrame = 17;
-        this.maxFrame = 24;
+    if (frame % Math.floor(10 * this.reloadSpeed) === 0) {
+      if (sharpShooter.amount > 0) {
+        defender1.reloadSpeed *= 0.9;
+        defender2.reloadSpeed *= 0.9;
+        for (let i = 0; i < defenders.length; i++) {
+          defenders[i].reloadSpeed *= 0.9;
+        }
+        sharpShooter.amount--;
       }
-    } else if (this.chosenDefender === 2) {
+      //console.log(10 * this.reloadSpeed);
       if (this.shooting) {
-        this.minFrame = 13;
-        this.maxFrame = 28;
+        if (this.frameX > this.minFrame) this.frameX--;
+        else this.frameX = this.maxFrame;
       } else {
-        this.minFrame = 0;
-        this.maxFrame = 12;
+        if (this.frameX > this.minIdleFrame) this.frameX--;
+        else this.frameX = this.maxIdleFrame;
       }
+      if (this.frameX === this.shootFrame) this.shootNow = true;
     }
     if (this.shooting && this.shootNow) {
-      if (this.chosenDefender === 1) {
-        projectiles.push(new Projectile(this.x + 70, this.y + 35, bullet1));
-      } else if (this.chosenDefender === 2) {
-        projectiles.push(new Projectile(this.x + 70, this.y + 35, bullet2));
-      }
+      projectiles.push(new Projectile(this.x + 70, this.y + 35, this.bullet));
       this.shootNow = false;
+    }
+    if (healthPotion.amount > 0) {
+      //maybe make it == 1?
+      for (let i = 0; i < defenders.length; i++) {
+        defenders[i].health = this.maxHealth;
+      }
+      healthPotion.amount--;
+    }
+    if (healthCrystals.amount > 0) {
+      this.maxHealth *= 1.1;
+      for (let i = 0; i < defenders.length; i++) {
+        defenders[i].health = this.maxHealth;
+      }
+      defender1.maxHealth *= 1.1;
+      defender2.maxHealth *= 1.1;
+      healthCrystals.amount--;
     }
   }
 }
@@ -494,6 +536,21 @@ function handleDefenders() {
   for (let i = 0; i < defenders.length; i++) {
     defenders[i].draw();
     defenders[i].update();
+    if (honey.amount > 0) {
+      for (let j = 0; j < shooters.length; j++) {
+        shooters[j].speed *= 0.8;
+      }
+      for (let j = 0; j < shooterOptions.length; j++) {
+        shooterOptions[j].speed *= 0.8;
+      }
+      for (let j = 0; j < enemies.length; j++) {
+        enemies[j].speed *= 0.8;
+      }
+      for (let j = 0; j < enemyOptions.length; j++) {
+        enemyOptions[j].speed *= 0.8;
+      }
+      honey.amount--;
+    }
     if (
       enemyPositions.indexOf(defenders[i].y) !== -1 ||
       shooterPositions.indexOf(defenders[i].y) !== -1
@@ -553,18 +610,18 @@ function chooseDefender() {
   let card1stroke = "black";
   let card2stroke = "black";
   if (collision(mouse, card1) && mouse.clicked && state == gameState.GAME) {
-    chosenDefender = 1;
+    chosenDefender = defender1;
   } else if (
     collision(mouse, card2) &&
     mouse.clicked &&
     state == gameState.GAME
   ) {
-    chosenDefender = 2;
+    chosenDefender = defender2;
   }
-  if (chosenDefender === 1 && state == gameState.GAME) {
+  if (chosenDefender === defender1 && state == gameState.GAME) {
     card1stroke = "gold";
     card2stroke = "black";
-  } else if (chosenDefender === 2 && state == gameState.GAME) {
+  } else if (chosenDefender === defender2 && state == gameState.GAME) {
     card1stroke = "black";
     card2stroke = "gold";
   } else {
@@ -576,9 +633,9 @@ function chooseDefender() {
   ctx.fillRect(card1.x, card1.y, card1.width, card1.height);
   ctx.strokeStyle = card1stroke;
   ctx.strokeRect(card1.x, card1.y, card1.width, card1.height);
-  ctx.drawImage(defender1, 0, 0, 194, 194, 0, 5, 194 / 2, 194 / 2);
+  ctx.drawImage(defender1Image, 0, 0, 194, 194, 0, 5, 194 / 2, 194 / 2);
   ctx.fillRect(card2.x, card2.y, card2.width, card2.height);
-  ctx.drawImage(defender2, 0, 0, 194, 194, 80, 5, 194 / 2, 194 / 2);
+  ctx.drawImage(defender2Image, 0, 0, 194, 194, 80, 5, 194 / 2, 194 / 2);
   ctx.strokeStyle = card2stroke;
   ctx.strokeRect(card2.x, card2.y, card2.width, card2.height);
 }
@@ -630,8 +687,8 @@ const crawlEnemy = {
   spriteHeight: 256,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: 0.3,
-  maxHealth: 100,
+  speed: 0.2,
+  maxHealth: 200,
   enemyType: crawlEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -648,8 +705,8 @@ const greenEnemy = {
   spriteHeight: 144,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: 0.7, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 1.0, //TODO: create specific speed for enemies
+  maxHealth: 20,
   enemyType: greenEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -684,8 +741,8 @@ const purpleEnemy = {
   spriteHeight: 254,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.4,
+  maxHealth: 160,
   enemyType: purpleEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -702,8 +759,8 @@ const redEnemy = {
   spriteHeight: 254,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.8,
+  maxHealth: 60,
   enemyType: redEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -720,8 +777,8 @@ const rockEnemy = {
   spriteHeight: 254,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.8,
+  maxHealth: 260,
   enemyType: rockEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -738,8 +795,8 @@ const tealEnemy = {
   spriteHeight: 256,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.3,
+  maxHealth: 400,
   enemyType: tealEnemyImage,
   frameX: 0,
   frameY: 0,
@@ -747,7 +804,7 @@ const tealEnemy = {
   maxFrame: 5,
 };
 
-enemyOptions = [
+const enemyOptions = [
   crawlEnemy,
   greenEnemy,
   orangeEnemy,
@@ -761,7 +818,7 @@ class Enemy {
     this.image = enemy.image;
     this.x = canvas.width;
     this.y = verticalPosition;
-    //this.enemy = enemy;
+    //this.enemy = enemy; //add when there is a spawn mechanism
     this.spriteWidth = enemy.spriteWidth;
     this.spriteHeight = enemy.spriteHeight;
     this.width = enemy.width;
@@ -810,11 +867,33 @@ function handleEnemies() {
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].update();
     enemies[i].draw();
+    if (grenade.amount > 0) {
+      enemies = [];
+      enemyPositions = [];
+      shooters = [];
+      shooterPositions = [];
+      projectiles = [];
+      grenade.amount--;
+      break;
+    }
+    if (honey.amount > 0) {
+      for (let j = 0; j < enemies.length; j++) {
+        enemies[j].speed *= 0.8;
+      }
+      for (let j = 0; j < enemyOptions.length; j++) {
+        enemyOptions[j].speed *= 0.8;
+      }
+      honey.amount--;
+    }
     if (enemies[i] && enemies[i].x < 0) {
       state = gameState.GAMEOVER;
     }
     if (enemies[i].health <= 0) {
-      let gainedResources = enemies[i].maxHealth / 10;
+      if (goldenFin.amount > 0) {
+        goldenFin.multiplier *= 2;
+        goldenFin.amount--;
+      }
+      let gainedResources = (enemies[i].maxHealth / 10) * goldenFin.multiplier;
       floatingMessages.push(
         new floatingMessage(
           "+" + gainedResources,
@@ -827,6 +906,7 @@ function handleEnemies() {
       floatingMessages.push(
         new floatingMessage("+" + gainedResources, 470, 85, 30, "gold")
       );
+
       numberOfResources += gainedResources;
       score += gainedResources;
       const findThisIndex = enemyPositions.indexOf(enemies[i].y);
@@ -845,8 +925,8 @@ function handleEnemies() {
     enemies.push(
       new Enemy(
         verticalPosition,
-        enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
-        //greenEnemy
+        //enemyOptions[Math.floor(Math.random() * enemyOptions.length)]
+        greenEnemy
       )
     );
     enemyPositions.push(verticalPosition);
@@ -866,8 +946,8 @@ const blueShooter = {
   spriteHeight: 192,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 1.2,
+  maxHealth: 20,
   shooterType: blueShooterImage,
   frameX: 0,
   frameY: 0,
@@ -876,6 +956,7 @@ const blueShooter = {
   maxFrame: 14,
   bullet: blueBullet,
   fireAt: 12,
+  //add power for the amount of damage that a bullet creates
 };
 
 const brownShooterImage = new Image();
@@ -888,8 +969,8 @@ const brownShooter = {
   spriteHeight: 192,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 1.0,
+  maxHealth: 60,
   shooterType: brownShooterImage,
   frameX: 0,
   frameY: 0,
@@ -910,7 +991,7 @@ const greenShooter = {
   spriteHeight: 192,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
+  speed: 0.8,
   maxHealth: 100,
   shooterType: greenShooterImage,
   frameX: 0,
@@ -932,8 +1013,8 @@ const purpleShooter = {
   spriteHeight: 224,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.5,
+  maxHealth: 200,
   shooterType: purpleShooterImage,
   frameX: 0,
   frameY: 0,
@@ -954,8 +1035,8 @@ const redShooter = {
   spriteHeight: 192,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 2.0,
+  maxHealth: 160,
   shooterType: redShooterImage,
   frameX: 0,
   frameY: 0,
@@ -976,8 +1057,8 @@ const tealShooter = {
   spriteHeight: 192,
   width: cellSize - cellGap * 2,
   height: cellSize - cellGap * 2,
-  speed: Math.random() * 0.2 + 0.4, //TODO: create specific speed for enemies
-  maxHealth: 100,
+  speed: 0.6,
+  maxHealth: 400,
   shooterType: tealShooterImage,
   frameX: 0,
   frameY: 0,
@@ -987,7 +1068,7 @@ const tealShooter = {
   bullet: tealBullet,
   fireAt: 8,
 };
-shooterOptions = [
+const shooterOptions = [
   blueShooter, //3
   brownShooter, //13
   greenShooter, //7
@@ -1133,7 +1214,8 @@ function handleShooters() {
     shooters.push(
       new Shooter(
         verticalPosition,
-        shooterOptions[Math.floor(Math.random() * shooterOptions.length)]
+        //shooterOptions[Math.floor(Math.random() * shooterOptions.length)]
+        blueShooter
       )
     );
     shooterPositions.push(verticalPosition);
@@ -1143,14 +1225,6 @@ function handleShooters() {
   }
 }
 
-// enemyOptions = [
-//   greenEnemy,
-//   orangeEnemy,
-//   purpleEnemy,
-//   redEnemy,
-//   rockEnemy,
-//   tealEnemy,
-// ];
 class Spawn {
   //cell is 1-5 from top to bottom
   constructor(enemy, cell, frame, health) {
@@ -1343,7 +1417,7 @@ canvas.addEventListener("click", function () {
   }
   let defenderCost = 100;
   if (numberOfResources >= defenderCost && state == gameState.GAME && clicked) {
-    defenders.push(new Defender(gridPositionX, gridPositionY));
+    defenders.push(new Defender(gridPositionX, gridPositionY, chosenDefender));
     defenderPositions.push(gridPositionY);
     numberOfResources -= defenderCost;
   } else if (state == gameState.GAME && !clicked) {
@@ -1707,6 +1781,27 @@ const shopHoveredIcons = new Image();
 shopHoveredIcons.src = "shop/ShopHoveredIcons.png";
 const shopInactiveIcons = new Image();
 shopInactiveIcons.src = "shop/ShopInactiveIcons.png";
+const buyButtonImage = new Image();
+buyButtonImage.src = "shop/buyButton.png";
+const buyButtonHoverImage = new Image();
+buyButtonHoverImage.src = "shop/buyButtonHovered.png";
+const buyButtonInactiveImage = new Image();
+buyButtonInactiveImage.src = "shop/buyButtonInactive.png";
+const buyButton = {
+  image: buyButtonImage,
+  hover: buyButtonHoverImage,
+  inactive: buyButtonInactiveImage,
+  sx: 0,
+  sy: 0,
+  dx: 128, //128//0, 0, 128, 128, 370, 458, 68, 68
+  dy: 128,
+  x: 370,
+  y: 458,
+  width: 68,
+  height: 68,
+  active: true,
+  selected: false,
+};
 function drawShop() {
   const imageWidth = 1920;
   const imageHeight = 1080;
@@ -1799,7 +1894,22 @@ function drawShop() {
     470,
     538
   );
+  ctx.drawImage(
+    buyButton.image,
+    buyButton.sx,
+    buyButton.sy,
+    buyButton.dx,
+    buyButton.dy,
+    buyButton.x,
+    buyButton.y,
+    buyButton.width,
+    buyButton.height
+  );
   ctx.fillStyle = "white";
+  ctx.font = "17px Orbitron";
+  ctx.textAlign = "center";
+  ctx.fillText("BUY", 370 + 34, 497);
+  ctx.textAlign = "left";
   ctx.font = "45px Orbitron";
   ctx.fillText("SHOP", 507, 95);
   let selectedItem = null;
@@ -1831,10 +1941,10 @@ function drawShop() {
     }
   }
 }
-let item1 = {
+let healthPotion = {
   name: "Health\nPotion",
   description: "Replenish all defenders' health back\nto 100%",
-  cost: 50,
+  cost: 200,
   sx: 35,
   sy: 228,
   dx: canvas.width * 0.48 + 35,
@@ -1845,11 +1955,13 @@ let item1 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item2 = {
+let healthCrystals = {
   name: "Health\nCrystals",
   description: "Expand all defenders' maximum\nhealth by 10%",
-  cost: 100,
+  cost: 50,
   sx: 35 + 68,
   sy: 228,
   dx: canvas.width * 0.48 + 35 + 68,
@@ -1860,11 +1972,13 @@ let item2 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item3 = {
+let powerBullets = {
   name: "Power\nBullets",
   description: "Make bullets 15% more destructive",
-  cost: 250,
+  cost: 25,
   sx: 35 + 68 * 2,
   sy: 228,
   dx: canvas.width * 0.48 + 35 + 68 * 2,
@@ -1875,11 +1989,13 @@ let item3 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item4 = {
+let speedBullets = {
   name: "Speed\nBullets",
   description: "Increase the speed of bullets by 10%",
-  cost: 400,
+  cost: 10,
   sx: 35 + 68 * 3,
   sy: 228,
   dx: canvas.width * 0.48 + 35 + 68 * 3,
@@ -1890,11 +2006,13 @@ let item4 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item5 = {
+let goldenFin = {
   name: "Golden\nFin",
   description: "Earn twice as many resources from\nevery enemy defeated",
-  cost: 15,
+  cost: 100,
   sx: 35 + 68 * 4,
   sy: 228,
   dx: canvas.width * 0.48 + 35 + 68 * 4,
@@ -1905,11 +2023,14 @@ let item5 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
+  multiplier: 1,
 };
-let item6 = {
+let grenade = {
   name: "Grenade",
   description: "Immediately destroy all enemies on\nscreen in one use",
-  cost: 5,
+  cost: 400,
   sx: 35 + 68 * 5,
   sy: 228,
   dx: canvas.width * 0.48 + 35 + 68 * 5,
@@ -1920,11 +2041,13 @@ let item6 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item7 = {
+let honey = {
   name: "Honey",
   description: "Slow enemies down by 20% by\nspreading honey on the ground",
-  cost: 0,
+  cost: 30,
   sx: 35,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35,
@@ -1935,11 +2058,13 @@ let item7 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item8 = {
+let sharpShooter = {
   name: "Sharp\nShooter",
-  description: "Upgrade guns to reload faster by 25%",
-  cost: 0,
+  description: "Upgrade guns to reload faster by 10%",
+  cost: 25,
   sx: 35 + 68,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35 + 68,
@@ -1950,11 +2075,14 @@ let item8 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item9 = {
+let rocks = {
+  //TODO: implement some luck for this item using Math.rand. Item should only be bought once
   name: "Rocks",
   description: "They're rocks. Maybe they're lucky.",
-  cost: 0,
+  cost: 5,
   sx: 35 + 68 * 2,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35 + 68 * 2,
@@ -1963,13 +2091,15 @@ let item9 = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item10 = {
+let parasite = {
   name: "Parasite",
   description: "Enemies take continual damage for\nthe next 120 seconds",
-  cost: 0,
+  cost: 50,
   sx: 35 + 68 * 3,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35 + 68 * 3,
@@ -1978,13 +2108,15 @@ let item10 = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item11 = {
+let basicArmor = {
   name: "Basic\nArmor",
   description: "Protects defenders for 50 health\npoints",
-  cost: 0,
+  cost: 100,
   sx: 35 + 68 * 4,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35 + 68 * 4,
@@ -1993,13 +2125,15 @@ let item11 = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item12 = {
+let advancedArmor = {
   name: "Advanced\nArmor",
   description: "Protects defenders for 200 health\npoints",
-  cost: 0,
+  cost: 300,
   sx: 35 + 68 * 5,
   sy: 228 + 68,
   dx: canvas.width * 0.48 + 35 + 68 * 5,
@@ -2008,13 +2142,15 @@ let item12 = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item13 = {
+let freezeBlast = {
   name: "Freeze\nBlast",
   description: "Freeze all on-screen enemies in place\nfor 30 seconds",
-  cost: 0,
+  cost: 150,
   sx: 35 + 68 * 0,
   sy: 228 + 68 * 2,
   dx: canvas.width * 0.48 + 35 + 68 * 0,
@@ -2025,12 +2161,13 @@ let item13 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item14 = {
+let defenseBlast = {
   name: "Defense\nBlast",
-  description:
-    "Enemy attacks have 25% less effect\non defenders",
-  cost: 0,
+  description: "Enemy attacks have 25% less effect\non defenders",
+  cost: 75,
   sx: 35 + 68 * 1,
   sy: 228 + 68 * 2,
   dx: canvas.width * 0.48 + 35 + 68 * 1,
@@ -2041,11 +2178,13 @@ let item14 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item15 = {
+let amuletOfImmunity = {
   name: "Amulet of\nImmunity",
   description: "Defenders earn complete immunity\nfor 60 seconds",
-  cost: 0,
+  cost: 150,
   sx: 35 + 68 * 2,
   sy: 228 + 68 * 2,
   dx: canvas.width * 0.48 + 35 + 68 * 2,
@@ -2056,11 +2195,13 @@ let item15 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
-let item16 = {
+let dustStorm = {
   name: "Dust\nStorm",
   description: "50% less enemies spawn for the next\n60 seconds",
-  cost: 0,
+  cost: 200,
   sx: 35 + 68 * 3,
   sy: 228 + 68 * 2,
   dx: canvas.width * 0.48 + 35 + 68 * 3,
@@ -2071,24 +2212,26 @@ let item16 = {
   height: 64,
   active: true,
   selected: false,
+  bought: false, //true when bought, after used, should revert back to false
+  amount: 0, //amount of an item a player has
 };
 let items = [
-  item1,
-  item2,
-  item3,
-  item4,
-  item5,
-  item6,
-  item7,
-  item8,
-  item9,
-  item10,
-  item11,
-  item12,
-  item13,
-  item14,
-  item15,
-  item16,
+  healthPotion,
+  healthCrystals,
+  powerBullets,
+  speedBullets,
+  goldenFin,
+  grenade,
+  honey,
+  sharpShooter,
+  rocks,
+  parasite,
+  basicArmor,
+  advancedArmor,
+  freezeBlast,
+  defenseBlast,
+  amuletOfImmunity,
+  dustStorm,
 ];
 function chooseIcon() {
   for (let i = 0; i < 16; i++) {
@@ -2131,9 +2274,49 @@ function chooseIcon() {
         items[i].height
       );
     }
+    if (
+      collision(mouse, buyButton) &&
+      state == gameState.SHOP &&
+      !(mouse.x in window || mouse.y in window) &&
+      buyButton.active
+    ) {
+      ctx.drawImage(buyButton.hover, 0, 0, 128, 128, 370, 458, 68, 68);
+      ctx.fillStyle = "white";
+      ctx.font = "17px Orbitron";
+      ctx.textAlign = "center";
+      ctx.fillText("BUY", 370 + 34, 497);
+      ctx.textAlign = "left";
+      if (mouse.clicked && state == gameState.SHOP) {
+        for (let j = 0; j < 16; j++) {
+          if (
+            items[j].selected &&
+            mouse.clicked &&
+            numberOfResources >= items[j].cost
+          ) {
+            items[j].bought = true;
+          } //the amount of times that item was bought is increased by 1
+        }
+      }
+    } else if (!buyButton.active) {
+      ctx.drawImage(buyButton.inactive, 0, 0, 128, 128, 370, 458, 68, 68);
+      ctx.fillStyle = "white";
+      ctx.font = "17px Orbitron";
+      ctx.textAlign = "center";
+      ctx.fillText("BUY", 370 + 34, 497);
+      ctx.textAlign = "left";
+    }
+  }
+  for (let i = 0; i < 16; i++) {
+    //adds 1 to amount of an item bought
+    if (items[i].bought && !mouse.clicked) {
+      items[i].amount++;
+      //if(numberOfResources >= items[i].cost){}
+      numberOfResources -= items[i].cost;
+      //subtract the amount of cost of the item for the resources
+      items[i].bought = false;
+    }
   }
 }
-
 //Menu Animations
 //sprites & objects for flying and flying/shooting defenders
 //sprites & objects for enemies moving
@@ -2143,7 +2326,7 @@ defender1flying.src = "sprites/menu/defender1flying.png";
 const defender2flying = new Image();
 defender2flying.src = "sprites/menu/defender2flying.png";
 class MenuAnimation {
-  constructor(x, y, chosenDefender, verticalPosition) {
+  constructor(x, y, defender, verticalPosition) {
     //animationType?
     this.x = x;
     this.y = y;
@@ -2155,15 +2338,15 @@ class MenuAnimation {
     this.spriteWidth = 194;
     this.spriteHeight = 194;
     this.minFrame = 0;
-    if (chosenDefender === 1) this.maxFrame = 6;
+    if (defender === 1) this.maxFrame = 6;
     else this.maxFrame = 7;
-    this.chosenDefender = chosenDefender;
+    this.defender = defender;
     this.verticalPosition = verticalPosition;
     //this.animationType = animationType;
   }
   draw() {
     let defender;
-    if (this.chosenDefender === 1) defender = defender1flying;
+    if (this.defender === 1) defender = defender1flying;
     else defender = defender2flying;
     ctx.drawImage(
       defender,
