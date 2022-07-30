@@ -1,3 +1,4 @@
+const startTime = new Date(); //the start time in epoch to
 const version = "Alpha 2.0";
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
@@ -1953,7 +1954,7 @@ let healthPotion = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -1970,7 +1971,7 @@ let healthCrystals = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -1987,7 +1988,7 @@ let powerBullets = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2004,7 +2005,7 @@ let speedBullets = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2021,7 +2022,7 @@ let goldenFin = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2039,7 +2040,7 @@ let grenade = {
   y: 240, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2056,7 +2057,7 @@ let honey = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2073,7 +2074,7 @@ let sharpShooter = {
   y: 240 + 68, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2159,7 +2160,7 @@ let freezeBlast = {
   y: 240 + 68 * 2, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2176,7 +2177,7 @@ let defenseBlast = {
   y: 240 + 68 * 2, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2193,7 +2194,7 @@ let amuletOfImmunity = {
   y: 240 + 68 * 2, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2210,7 +2211,7 @@ let dustStorm = {
   y: 240 + 68 * 2, //68
   width: 64,
   height: 64,
-  active: true,
+  active: false,
   selected: false,
   bought: false, //true when bought, after used, should revert back to false
   amount: 0, //amount of an item a player has
@@ -2573,6 +2574,11 @@ function animate() {
       // ctx.fillText("QUIT", 400, 485);
       break;
   }
+  //fps check
+  const currentTime = new Date();
+  console.log(Math.floor(((currentTime - startTime) / 1000)));
+  // if (Math.floor(((currentTime - startTime) / 1000)) % 10 == 0)
+  //   console.log((currentTime - startTime) / 1000);
   requestAnimationFrame(animate);
 }
 animate();
