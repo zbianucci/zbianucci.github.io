@@ -1,0 +1,38 @@
+{
+  "bullet1": {
+    "image": null,
+    "spriteWidth": 64,
+    "spriteHeight": 64,
+    "width": 40,
+    "height": 40,
+    "speed": 5,
+    "power": 5,
+    "type": "defender",
+    "frameX": 0,
+    "frameY": 0,
+    "minFrame": 0,
+    "explodeFrame": 4,
+    "maxFrame": 6,
+    "diffX": 0,
+    "diffY": -17,
+    "src": "sprites/bullets/d1bullet.png"
+  },
+  "bullet2": {
+    "image": null,
+    "spriteWidth": 64,
+    "spriteHeight": 64,
+    "width": 40,
+    "height": 40,
+    "speed": 5,
+    "power": 5,
+    "type": "defender",
+    "frameX": 0,
+    "frameY": 0,
+    "minFrame": 0,
+    "explodeFrame": 3,
+    "maxFrame": 6,
+    "diffX": 0,
+    "diffY": -17,
+    "src": "sprites/bullets/d2bullet.png"
+  }
+}

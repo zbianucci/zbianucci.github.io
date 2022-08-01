@@ -1,3 +1,6 @@
+import defendersData from "./json-data/defenders.json" assert { type: "json" };
+import bulletsData from "./json-data/bullets.json" assert { type: "json" };
+
 const startTime = new Date(); //the start time in epoch to
 const version = "Alpha 2.0";
 const canvas = document.getElementById("canvas1");
@@ -23,6 +26,9 @@ const winningScore = 100;
 let clicked = false;
 let mute = true;
 let paused = false;
+let menuAnimation = [];
+let menu = undefined;
+let button = undefined;
 
 let gameGrid = [];
 let defenders = [];
@@ -44,8 +50,8 @@ const gameState = {
   PAUSE: "pause",
   SHOP: "shop",
 };
-let state = gameState.SHOP;
-//let state = gameState.MENU;
+//let state = gameState.SHOP;
+let state = gameState.MENU;
 
 //mouse
 const mouse = {
@@ -114,44 +120,18 @@ const bulletTypes = [];
 const bullet1Image = new Image();
 bullet1Image.src = "sprites/bullets/d1bullet.png";
 bulletTypes.push(bullet1Image); //TODO: change later
-const bullet1 = {
-  image: bullet1Image,
-  spriteWidth: 64,
-  spriteHeight: 64,
-  width: 40,
-  height: 40,
-  speed: 5,
-  power: 5,
-  type: "defender",
-  frameX: 0,
-  frameY: 0,
-  minFrame: 0,
-  explodeFrame: 4,
-  maxFrame: 6,
-  diffX: 0,
-  diffY: -17,
-};
+
+bulletsData.bullet1.image = bullet1Image;
+const bullet1 = bulletsData.bullet1;
+bullet1.image = bullet1Image;
 
 const bullet2Image = new Image();
 bullet2Image.src = "sprites/bullets/d2bullet.png";
 bulletTypes.push(bullet2Image); //TODO: change later
-const bullet2 = {
-  image: bullet2Image,
-  spriteWidth: 64,
-  spriteHeight: 64,
-  width: 40,
-  height: 40,
-  speed: 5,
-  power: 5,
-  type: "defender",
-  frameX: 0,
-  frameY: 0,
-  minFrame: 0,
-  explodeFrame: 3,
-  maxFrame: 6,
-  diffX: 0,
-  diffY: -17,
-};
+
+bulletsData.bullet2.image = bullet2Image;
+const bullet2 = bulletsData.bullet2;
+bullet2.image = bullet1Image;
 
 const blueBulletImage = new Image();
 blueBulletImage.src = "sprites/bullets/blueBullet.png";
@@ -402,44 +382,15 @@ const defender1Image = new Image();
 defender1Image.src = "sprites/defenders/defender1.png";
 const defender2Image = new Image();
 defender2Image.src = "sprites/defenders/defender2.png";
-const defender1 = {
-  image: defender1Image,
-  spriteWidth: 194,
-  spriteHeight: 194,
-  width: cellSize - cellGap * 2,
-  height: cellSize - cellGap * 2,
-  maxHealth: 100,
-  shooterType: defender1Image,
-  frameX: 0,
-  frameY: 0,
-  minFrame: 0,
-  shootFrame: 15, //18 for defender2
-  maxFrame: 16, //12 for defender2
-  minIdleFrame: 17, //
-  maxIdleFrame: 24,
-  bullet: bullet1,
-  reloadSpeed: 1,
-  //add power for the amount of damage that a bullet creates
-};
-const defender2 = {
-  image: defender2Image,
-  spriteWidth: 194,
-  spriteHeight: 194,
-  width: cellSize - cellGap * 2,
-  height: cellSize - cellGap * 2,
-  maxHealth: 100,
-  shooterType: defender2Image,
-  frameX: 0,
-  frameY: 0,
-  minFrame: 13,
-  shootFrame: 18, //18 for defender2
-  maxFrame: 28, //12 for defender2
-  minIdleFrame: 0, //0
-  maxIdleFrame: 12, //12
-  bullet: bullet2,
-  reloadSpeed: 1,
-  //add power for the amount of damage that a bullet creates
-};
+
+defendersData.defender1.image = defender1Image;
+const defender1 = defendersData.defender1;
+defender1.bullet = bullet1;
+
+defendersData.defender2.image = defender2Image;
+const defender2 = defendersData.defender2;
+defender2.bullet = bullet2;
+
 let chosenDefender = defender1; //boy for 1, girl for 2
 class Defender {
   constructor(x, y, defender) {
@@ -1736,7 +1687,7 @@ class Features {
     }
   }
 }
-features = new Features();
+let features = new Features();
 function handleFeatures() {
   features.draw();
   features.update();
@@ -2567,7 +2518,7 @@ function animate() {
       handleMenuAnimations();
       drawSound(mute);
       chooseIcon();
-      handleGameStatus((shop = true));
+      handleGameStatus(true);
       drawShopButton();
       //frame++; //may want to remove
       // ctx.font = "40px Orbitron";
@@ -2576,7 +2527,7 @@ function animate() {
   }
   //fps check
   const currentTime = new Date();
-  console.log(Math.floor(((currentTime - startTime) / 1000)));
+  console.log(Math.floor((currentTime - startTime) / 1000));
   // if (Math.floor(((currentTime - startTime) / 1000)) % 10 == 0)
   //   console.log((currentTime - startTime) / 1000);
   requestAnimationFrame(animate);

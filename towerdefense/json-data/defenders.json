@@ -1,0 +1,36 @@
+{
+  "defender1": {
+    "name": "defender1",
+    "image": null,
+    "spriteWidth": 194,
+    "spriteHeight": 194,
+    "width": 94,
+    "height": 94,
+    "maxHealth": 100,
+    "frameX": 0,
+    "frameY": 0,
+    "minFrame": 0,
+    "shootFrame": 15,
+    "maxFrame": 16,
+    "minIdleFrame": 17,
+    "maxIdleFrame": 24,
+    "reloadSpeed": 1
+  },
+  "defender2": {
+    "name": "defender2",
+    "image": null,
+    "spriteWidth": 194,
+    "spriteHeight": 194,
+    "width": 94,
+    "height": 94,
+    "maxHealth": 100,
+    "frameX": 0,
+    "frameY": 0,
+    "minFrame": 13,
+    "shootFrame": 18,
+    "maxFrame": 28,
+    "minIdleFrame": 0,
+    "maxIdleFrame": 12,
+    "reloadSpeed": 1
+  }
+}
